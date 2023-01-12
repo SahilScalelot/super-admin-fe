@@ -7,67 +7,68 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Example',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        link : '/admin/example'
     },{
         id   : 'items',
-        title: 'Items',
+        title: 'Seating Items',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/items'
+        icon : 'heroicons_outline:cube',
+        // link : '/admin/items'
+        link : 'ecommerce'
     },{
         id   : 'discounts',
         title: 'Discounts',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/discounts'
+        icon : 'heroicons_outline:tag',
+        link : '/admin/discounts'
     },{
         id   : 'eventCategories',
         title: 'Event Categories',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/event-categories'
+        icon : 'heroicons_outline:view-grid-add',
+        link : '/admin/event-categories'
     },{
         id   : 'mediaUploader',
         title: 'Media Uploader',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/media-uploader'
+        icon : 'heroicons_outline:upload',
+        link : '/admin/media-uploader'
     },{
         id   : 'shopCategories',
         title: 'Shop Categories',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/shop-categories'
+        icon : 'heroicons_outline:view-grid',
+        link : '/admin/shop-categories'
     },{
-        id   : 'promotionalPlans',
-        title: 'Promotional Plans',
+        id   : 'promotionPlans',
+        title: 'Promotion Plans',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/promotional-plans'
+        icon : 'mat_outline:local_play',
+        link : '/admin/promotion-plans'
     },{
         id   : 'platforms',
         title: 'Platforms',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/platforms'
+        icon : 'heroicons_outline:template',
+        link : '/admin/platforms'
     },{
         id   : 'subscriptionPlans',
         title: 'Subscription Plans',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/subscription-plans'
+        icon : 'mat_outline:local_play',
+        link : '/admin/subscription-plans'
     },{
         id   : 'notificationCoupons',
         title: 'Notification Coupons',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/notification-coupons'
+        icon : 'mat_outline:notifications_active',
+        link : '/admin/notification-coupons'
     },{
         id   : 'eventBookingCoupons',
         title: 'Event Booking Coupons',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/event-booking-coupons'
+        icon : 'heroicons_outline:ticket',
+        link : '/admin/event-booking-coupons'
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [
@@ -76,7 +77,7 @@ export const compactNavigation: FuseNavigationItem[] = [
         title: 'Discounts',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        link : '/admin/example'
     }
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
@@ -85,7 +86,7 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         title: 'Event Categories',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        link : '/admin/example'
     }
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
@@ -94,6 +95,6 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         title: 'Example',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        link : '/admin/example'
     }
 ];
