@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { InventoryPagination, InventoryProduct } from 'app/modules/admin/ecommerce/inventory/inventory.types';
+import { CONSTANTS } from 'app/layout/common/constants';
+import { GlobalFunctions } from 'app/layout/common/global-functions';
 
 @Injectable({
     providedIn: 'root'
@@ -14,12 +16,15 @@ export class InventoryService
     private _product: BehaviorSubject<InventoryProduct | null> = new BehaviorSubject(null);
     private _products: BehaviorSubject<InventoryProduct[] | null> = new BehaviorSubject(null);
 
+    constants: any = CONSTANTS;  
+
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
-    {
-    }
+    constructor(
+        private _httpClient: HttpClient,
+        private _globalFunctions: GlobalFunctions,
+    ){}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -62,21 +67,26 @@ export class InventoryService
      * @param order
      * @param search
      */
-    getProducts(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
-        Observable<{ pagination: InventoryPagination; products: InventoryProduct[] }>
+    getProducts(page: number = 1, limit: number = 10, sortfield: string = 'itemname', sortoption: 'asc' | 'desc' | '' = 'asc', search: string = '')
     {
-        return this._httpClient.get<{ pagination: InventoryPagination; products: InventoryProduct[] }>('api/apps/ecommerce/inventory/products', {
-            params: {
-                page: '' + page,
-                size: '' + size,
-                sort,
-                order,
-                search
-            }
-        }).pipe(
-            tap((response) => {
-                this._pagination.next(response.pagination);
-                this._products.next(response.products);
+        return this._httpClient.post( 
+            this.constants.baseImageURL + 'superadmin/item', 
+            {
+                page: page,
+                limit: limit,
+                sortfield: sortfield,
+                sortoption: '1',
+                search: search
+            },
+            this._globalFunctions.getAuthorizationHeader(),
+        ).pipe(
+            tap((response: any) => {
+                // this._pagination.next(response.pagination);
+                this._products.next(response.Data);
+            }, (error: any) => {
+                console.log(error);
+                
+                this._globalFunctions.errorHanding(error, this, true);
             })
         );
     }
@@ -91,7 +101,7 @@ export class InventoryService
             map((products) => {
 
                 // Find the product
-                const product = products.find(item => item.id === id) || null;
+                const product = products.find(item => item._id === id) || null;
 
                 // Update the product
                 this._product.next(product);
@@ -148,7 +158,7 @@ export class InventoryService
                 map((updatedProduct) => {
 
                     // Find the index of the updated product
-                    const index = products.findIndex(item => item.id === id);
+                    const index = products.findIndex(item => item._id === id);
 
                     // Update the product
                     products[index] = updatedProduct;
@@ -161,7 +171,7 @@ export class InventoryService
                 }),
                 switchMap(updatedProduct => this.product$.pipe(
                     take(1),
-                    filter(item => item && item.id === id),
+                    filter(item => item && item._id === id),
                     tap(() => {
 
                         // Update the product if it's selected
@@ -188,7 +198,7 @@ export class InventoryService
                 map((isDeleted: boolean) => {
 
                     // Find the index of the deleted product
-                    const index = products.findIndex(item => item.id === id);
+                    const index = products.findIndex(item => item._id === id);
 
                     // Delete the product
                     products.splice(index, 1);

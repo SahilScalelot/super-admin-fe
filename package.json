@@ -1,9 +1,9 @@
 {
-    "name": "@fuse/starter",
-    "version": "13.5.0",
-    "description": "Fuse - Angular Admin Template and Starter Project",
-    "author": "https://themeforest.net/user/srcn",
-    "license": "https://themeforest.net/licenses/standard",
+    "name": "Super Admin Panel",
+    "version": "0.1",
+    "description": "Festume Evento",
+    "author": "Sahil",
+    "license": "",
     "private": true,
     "scripts": {
         "ng": "ng",

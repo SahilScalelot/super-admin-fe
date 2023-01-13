@@ -12,6 +12,7 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { mockApiServices } from './mock-api';
+import { GlobalFunctions } from './layout/common/global-functions';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -43,6 +44,9 @@ const routerConfig: ExtraOptions = {
     ],
     bootstrap   : [
         AppComponent
+    ],
+    providers: [
+        GlobalFunctions,
     ]
 })
 export class AppModule

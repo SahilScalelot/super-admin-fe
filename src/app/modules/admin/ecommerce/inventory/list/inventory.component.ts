@@ -76,11 +76,11 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     {
         // Create the selected product form
         this.selectedProductForm = this._formBuilder.group({
-            id               : [''],
-            itemimage         : [''],
-            itemname             : ['', [Validators.required]],
-            description      : [''],
-            status           : [false]
+            id           : [''],
+            itemimage    : [''],
+            itemname     : ['', [Validators.required]],
+            description  : [''],
+            status       : [false]
         });
 
         // Get the pagination
@@ -179,7 +179,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     toggleDetails(productId: string): void
     {
         // If the product is already selected...
-        if ( this.selectedProduct && this.selectedProduct.id === productId )
+        if ( this.selectedProduct && this.selectedProduct._id === productId )
         {
             // Close the details
             this.closeDetails();

@@ -1,6 +1,5 @@
-export interface InventoryProduct
-{
-    id: string;
+export interface InventoryProduct{
+    _id: string;
     itemname?: string;
     itemimage: string;
     description: string;
@@ -9,10 +8,16 @@ export interface InventoryProduct
 
 export interface InventoryPagination
 {
-    length: number;
-    size: number;
     page: number;
-    lastPage: number;
-    startIndex: number;
-    endIndex: number;
+    limit: number;
+    search: string;
+    sortfield: string;
+    sortoption: string;
+
+    // length: number;
+    // size: number;
+    // page: number;
+    // lastPage: number;
+    // startIndex: number;
+    // endIndex: number;
 }

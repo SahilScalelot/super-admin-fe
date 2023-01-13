@@ -10,11 +10,17 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/admin/example'
     },{
         id   : 'items',
-        title: 'Seating Items',
+        title: 'Seating Items Table',
         type : 'basic',
         icon : 'heroicons_outline:cube',
         // link : '/admin/items'
         link : 'ecommerce'
+    },{
+        id   : 'items',
+        title: 'Seating Items',
+        type : 'basic',
+        icon : 'heroicons_outline:cube',
+        link : '/admin/items'
     },{
         id   : 'discounts',
         title: 'Discounts',
