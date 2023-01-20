@@ -5,7 +5,12 @@ import { ExampleComponent } from 'app/modules/admin/example/example.component';
 import { SeatingItemsComponent } from 'app/modules/admin/seating-items/seating-items.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { FuseConfirmationModule } from '@fuse/services/confirmation';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from 'app/shared/shared.module';
+import { MatSortModule } from '@angular/material/sort';
 
 const routes: Route[] = [
   {
@@ -27,7 +32,14 @@ const routes: Route[] = [
     RouterModule.forChild(routes),
     CommonModule,
     MatTableModule,
-    MatInputModule
+    MatInputModule,
+    MatPaginatorModule,
+    FuseConfirmationModule,
+    MatIconModule,
+
+    SharedModule,
+    MatSortModule,
+    MatButtonModule
   ]
 })
 export class AdminModule { }

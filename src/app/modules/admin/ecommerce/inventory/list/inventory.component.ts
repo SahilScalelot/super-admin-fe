@@ -76,7 +76,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     {
         // Create the selected product form
         this.selectedProductForm = this._formBuilder.group({
-            id           : [''],
             itemimage    : [''],
             itemname     : ['', [Validators.required]],
             description  : [''],

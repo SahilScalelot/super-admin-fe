@@ -67,7 +67,7 @@ export class InventoryService
      * @param order
      * @param search
      */
-    getProducts(page: number = 1, limit: number = 10, sortfield: string = 'itemname', sortoption: 'asc' | 'desc' | '' = 'asc', search: string = '')
+    getProducts(page: number = 1 - 1, limit: number = 10, sortfield: string = 'itemname', sortoption: 'asc' | 'desc' | '' = 'asc', search: string = '')
     {
         return this._httpClient.post( 
             this.constants.baseImageURL + 'superadmin/item', 
@@ -75,12 +75,14 @@ export class InventoryService
                 page: page,
                 limit: limit,
                 sortfield: sortfield,
-                sortoption: '1',
+                sortoption: sortoption,
                 search: search
             },
             this._globalFunctions.getAuthorizationHeader(),
         ).pipe(
             tap((response: any) => {
+                console.log(response);
+                
                 // this._pagination.next(response.pagination);
                 this._products.next(response.Data);
             }, (error: any) => {
