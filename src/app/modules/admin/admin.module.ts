@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 const routes: Route[] = [
   {
@@ -37,6 +38,7 @@ const routes: Route[] = [
     FuseConfirmationModule,
     MatIconModule,
 
+    MatSlideToggleModule,
     SharedModule,
     MatSortModule,
     MatButtonModule

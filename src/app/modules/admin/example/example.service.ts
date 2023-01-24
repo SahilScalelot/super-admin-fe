@@ -13,14 +13,14 @@ export class ExampleService {
   getItemsList(filter: any = {}): any {
     return this.http.post(environment.appURL + 'superadmin/item', filter, this._globalFunctions.getFileAuthorizationHeader());
   }
-  
-  getItemById(itemId: any = ''): any {
-    return this.http.post(environment.appURL + 'superadmin/item/getone', {'itemid': itemId}, this._globalFunctions.getAuthorizationHeader());
+
+  createAndUpdateItem(itemsObj: any = ''): any {
+    return this.http.post(environment.appURL + 'superadmin/item/save', itemsObj, this._globalFunctions.getAuthorizationHeader());
   }
 
-  // liveEventById(eventId: any = ''): any {
-  //   return this.http.post(environment.appURL + 'organizer/events/liveone', {eventid: eventId}, this._globalFunctions.getAuthorizationHeader());
-  // }
+  deleteItem(itemsId: any = ''): any {
+    return this.http.post(environment.appURL + 'superadmin/item/remove', {itemid: itemsId}, this._globalFunctions.getAuthorizationHeader());
+  }
 
   // liveMultipleEvents(eventIds: any = []): any {
   //   return this.http.post(environment.appURL + 'organizer/events/livemulti', {eventids: eventIds}, this._globalFunctions.getAuthorizationHeader());
