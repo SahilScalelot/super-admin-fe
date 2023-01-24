@@ -6,20 +6,20 @@ import { environment } from 'environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ExampleService {
+export class DiscountsService {
 
   constructor(private http: HttpClient,private _globalFunctions: GlobalFunctions) { }
   
-  getItemsList(filter: any = {}): any {
-    return this.http.post(environment.appURL + 'superadmin/item', filter, this._globalFunctions.getFileAuthorizationHeader());
+  getList(filter: any = {}): any {
+    return this.http.post(environment.appURL + 'superadmin/discount', filter, this._globalFunctions.getFileAuthorizationHeader());
   }
 
-  createAndUpdateItem(itemsObj: any = ''): any {
-    return this.http.post(environment.appURL + 'superadmin/item/save', itemsObj, this._globalFunctions.getAuthorizationHeader());
+  createAndUpdate(discountObj: any = ''): any {
+    return this.http.post(environment.appURL + 'superadmin/discount/save', discountObj, this._globalFunctions.getAuthorizationHeader());
   }
 
-  deleteItem(itemsId: any = ''): any {
-    return this.http.post(environment.appURL + 'superadmin/item/remove', {itemid: itemsId}, this._globalFunctions.getAuthorizationHeader());
+  delete(discountId: any = ''): any {
+    return this.http.post(environment.appURL + 'superadmin/discount/remove', {discountid: discountId}, this._globalFunctions.getAuthorizationHeader());
   }
 
   // liveMultipleEvents(eventIds: any = []): any {

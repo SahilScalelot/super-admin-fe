@@ -6,18 +6,18 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CONSTANTS } from 'app/layout/common/constants';
 import { GlobalFunctions } from 'app/layout/common/global-functions';
 import { MediaService } from '../media.service';
-import { ExampleService } from './example.service';
-import { InventoryProduct } from './example.types';
+import { DiscountsService } from './discounts.service';
+import { Discounts } from './discounts.types';
 
 @Component({
-  selector: 'example',
-  templateUrl: './example.component.html',
-  styleUrls: ['./example.component.scss'],
+  selector: 'discounts',
+  templateUrl: './discounts.component.html',
+  styleUrls: ['./discounts.component.scss'],
   // changeDetection: ChangeDetectionStrategy.OnPush,
   animations: fuseAnimations,
   // encapsulation: ViewEncapsulation.None
 })
-export class ExampleComponent implements OnInit {
+export class DiscountsComponent implements OnInit {
   
   @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
 
@@ -27,10 +27,10 @@ export class ExampleComponent implements OnInit {
 
   searchInputControl: FormControl = new FormControl();
 
-  products: InventoryProduct[] = [];
-  selectedProduct: InventoryProduct;
+  products: Discounts[] = [];
+  selectedProduct: Discounts;
   pagination: any = {};
-  selectedItemsForm: any;
+  discountsForm: any;
 
   flashMessage: 'success' | 'error' | null = null;
   /**
@@ -38,7 +38,7 @@ export class ExampleComponent implements OnInit {
    */
   constructor(
     private _formBuilder: FormBuilder,
-    private _exampleService: ExampleService,
+    private _discountsService: DiscountsService,
     private _mediaService: MediaService,
     private _router: Router,
     private _globalFunctions: GlobalFunctions,
@@ -63,10 +63,10 @@ export class ExampleComponent implements OnInit {
       page: page || '1',
       limit: event?.rows || '10',
       search: "",
-      sortfield: "itemname",
-      sortoption: "1"
+      sortfield: "_id",
+      sortoption: "-1"
     };
-    this._exampleService.getItemsList(filter).subscribe((result: any) => {
+    this._discountsService.getList(filter).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         // this.paging = result.Data;
         this.products = result.Data.docs;
@@ -86,7 +86,7 @@ export class ExampleComponent implements OnInit {
 
   toggleDetails(item: any = {}): void {
     // If the product is already selected...
-    if (this.selectedProduct && this.selectedProduct._id === item._id) {
+    if (this.selectedProduct && this.selectedProduct.discountid === item.discountid) {
       // Close the details
       this.closeDetails();
       return;
@@ -112,60 +112,31 @@ export class ExampleComponent implements OnInit {
     }, 3000);
   }
 
-  uploadItemImage(event: any): void {
-    if (event.target.files && event.target.files[0]) {
-      this.isImageLoading = true;
-      const file = event.target.files[0];
-      const fileObj: any = new FormData();
-      fileObj.append('file', file);
-      this._mediaService.updateImage(fileObj).subscribe((result: any) => {
-        if (result && result.IsSuccess) {
-          console.log(result.Data.url);
-          this.selectedProduct.itemimage = result.Data.url;
-          // this._sNotify.success(result.msg, 'Success');
-          this.isImageLoading = false;
-        } else {
-          this._globalFunctions.successErrorHandling(result, this, true);
-        }
-      }, (error: any) => {
-        this.isImageLoading = false;
-        this._globalFunctions.errorHanding(error, this, true);
-      });
-    }
-  }
+  updateSelectedProduct(discountId: any = ''): void {
+    // if (this.discountsForm.invalid) {
+    //   Object.keys(this.discountsForm.controls).forEach((key) => {
+    //     this.discountsForm.controls[key].touched = true;
+    //     this.discountsForm.controls[key].markAsDirty();
+    //   });
+    //   return;
+    // }
 
-  removeAvatar(): void {
-    // Get the form control for 'avatar'
-    const itemImageFormControl = this.selectedItemsForm.get('itemimage');
-
-    // Set the avatar as null
-    itemImageFormControl.setValue(null);
-
-    // Update the contact
-    this.selectedProduct.itemimage = null;
-  }
-
-  updateSelectedProduct(itemsId: any = ''): void {
-    if (this.selectedItemsForm.invalid) {
-      Object.keys(this.selectedItemsForm.controls).forEach((key) => {
-        this.selectedItemsForm.controls[key].touched = true;
-        this.selectedItemsForm.controls[key].markAsDirty();
-      });
-      return;
-    }
-
-    const preparedItemsObj: any = this.prepareItemsObj(this.selectedItemsForm.value, itemsId);
-    this._exampleService.createAndUpdateItem(preparedItemsObj).subscribe((result: any) => {
+    const preparedItemsObj: any = this.prepareItemsObj(this.discountsForm.value, discountId);
+    this._discountsService.createAndUpdate(preparedItemsObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.showFlashMessage('success');
         // this.products = result.Data.docs;
-        const index = (itemsId == '') ? 0 : this.products.findIndex((item: InventoryProduct) => item._id === itemsId);
+        const index = (discountId == '') ? 0 : this.products.findIndex((item: any) => item._id === discountId);
+        console.log(index);
+        console.log(this.products);
+        
         const tmpProducts: any = this._globalFunctions.copyObject(this.products);
         if (index != -1) {
           tmpProducts[index] = result?.Data;
         }
         this.products = [...this._globalFunctions.copyObject(tmpProducts)];
       } else {
+        this.showFlashMessage('error');
         this._globalFunctions.successErrorHandling(result, this, true);
       }
       this.isLoading = false;
@@ -191,14 +162,14 @@ export class ExampleComponent implements OnInit {
       // If the confirm button pressed...
       if (result === 'confirmed') {
         // Get the product object
-        const product = this.selectedItemsForm.getRawValue();
-        const index = this.products.findIndex((item: InventoryProduct) => item._id === product.itemid);
+        const product = this.discountsForm.getRawValue();
+        const index = this.products.findIndex((item: Discounts) => item.discountid === product.discountid);
 
         if (id != '' && index != -1) {
           console.log('in');
           this.products.splice(index, 1);
           // Delete the product on the server
-          this._exampleService.deleteItem(product.itemid).subscribe(() => {
+          this._discountsService.delete(product.discountid).subscribe(() => {
             // Close the details
             this.closeDetails();
           });
@@ -214,31 +185,34 @@ export class ExampleComponent implements OnInit {
 
   newAddItems(): void {
     // Generate a new product
-    const newProduct: InventoryProduct = {
-      _id: '',
-      itemname: '',
-      itemimage: '',
-      description: '',
-      status: false
+    const newProduct: Discounts = {
+      discountid    : '',
+      discountname  : '',
+      discounttype  : '',
+      description   : '',
+      discount      : '',
+      status        : false,
+      tandc         : '',
     };
     this.products.unshift(newProduct);
     this.toggleDetails(newProduct);
   }
 
-  prepareItemsObj(shopObj: any, itemsId: any): any {
+  prepareItemsObj(shopObj: any, discountid: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
-    preparedShopObj.itemid = itemsId;
-    preparedShopObj.itemimage = this.selectedProduct.itemimage;
+    preparedShopObj.discountid = discountid;
     return preparedShopObj;
   }
 
   private _prepareItemsListForm(itemsListObj: any = {}): void {
-    this.selectedItemsForm = this._formBuilder.group({
-      itemid: [itemsListObj?._id || ''],
-      itemname: [itemsListObj?.itemname || '', [Validators.required]],
-      itemimage: [itemsListObj?.itemimage || '', [Validators.required]],
-      description: [itemsListObj?.description || '', [Validators.required]],
-      status: [itemsListObj?.status || false],
+    this.discountsForm = this._formBuilder.group({
+      discountid    : [itemsListObj?.discountid || ''],
+      discountname  : [itemsListObj?.discountname || '', [Validators.required]],
+      discounttype  : [itemsListObj?.discounttype || '', [Validators.required]],
+      description   : [itemsListObj?.description || '', [Validators.required]],
+      discount      : [itemsListObj?.discount || '', [Validators.required]],
+      status        : [itemsListObj?.status || false],
+      tandc         : [itemsListObj?.tandc || '', [Validators.required]],
     });
   }
 

@@ -1,9 +1,15 @@
-/* Structure */
-table {
-  width: 100%;
-}
+.inventory-grid {
+  grid-template-columns: 48px auto 40px;
 
-.mat-mdc-form-field {
-  font-size: 14px;
-  width: 100%;
+  @screen sm {
+    grid-template-columns: 120px 120px auto 112px 72px;
+  }
+
+  @screen md {
+    grid-template-columns: 120px 120px auto 112px 72px;
+  }
+
+  @screen lg {
+    grid-template-columns: 120px 120px auto 112px 72px;
+  }
 }

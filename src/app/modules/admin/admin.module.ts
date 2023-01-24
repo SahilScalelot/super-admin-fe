@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Route, RouterModule } from '@angular/router';
-import { ExampleComponent } from 'app/modules/admin/example/example.component';
 import { SeatingItemsComponent } from 'app/modules/admin/seating-items/seating-items.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
@@ -12,22 +11,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { DiscountsComponent } from './discounts/discounts.component';
 
 const routes: Route[] = [
   {
-    path: 'example',
-    component: ExampleComponent
-  },
-  {
     path: 'items',
     component: SeatingItemsComponent
+  },{
+    path: 'discounts',
+    component: DiscountsComponent
   }
 ];
 
 @NgModule({
   declarations: [
-    ExampleComponent,
-    SeatingItemsComponent
+    SeatingItemsComponent,
+    DiscountsComponent
   ],
   imports: [
     RouterModule.forChild(routes),

@@ -78,7 +78,6 @@ export const appRoutes: Route[] = [
         // },
         children   : [
             {path: 'admin', loadChildren: () => import('app/modules/admin/admin.module').then(m => m.AdminModule)},
-            {path: 'ecommerce', loadChildren: () => import('app/modules/admin/ecommerce/ecommerce.module').then(m => m.ECommerceModule)},
         ]
     }
 ];
