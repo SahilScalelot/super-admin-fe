@@ -163,7 +163,9 @@ export class DiscountsComponent implements OnInit {
       if (result === 'confirmed') {
         // Get the product object
         const product = this.discountsForm.getRawValue();
-        const index = this.products.findIndex((item: Discounts) => item.discountid === product.discountid);
+        const index = this.products.findIndex((item: any) => item.id === product.discountid);
+        console.log(index);
+        
 
         if (id != '' && index != -1) {
           console.log('in');
