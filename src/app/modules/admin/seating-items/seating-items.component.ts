@@ -1,13 +1,19 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CONSTANTS } from 'app/layout/common/constants';
 import { GlobalFunctions } from 'app/layout/common/global-functions';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
 import { MediaService } from '../media.service';
 import { SeatingItemsService } from './seating-items.service';
 import { InventoryProduct } from './seating-items.types';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'seating-items',
@@ -18,7 +24,7 @@ import { InventoryProduct } from './seating-items.types';
   // encapsulation: ViewEncapsulation.None
 })
 export class SeatingItemsComponent implements OnInit {
-  
+
   @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
 
   isLoading: boolean = false;
@@ -29,10 +35,13 @@ export class SeatingItemsComponent implements OnInit {
 
   products: InventoryProduct[] = [];
   selectedProduct: InventoryProduct;
-  pagination: any = {};
   selectedItemsForm: any;
-
   flashMessage: 'success' | 'error' | null = null;
+
+  pagination: any = {};
+  filterObj: any = {};
+  results$: Observable<any>;
+
   /**
    * Constructor
    */
@@ -49,27 +58,31 @@ export class SeatingItemsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getEvent();
-
-    this._prepareItemsListForm();
-  }
-
-  getEvent(event: any = ''): void {
-    this.isLoading = true;
-    const page = event ? (event.page + 1) : 1;
-    // this.perPageLimit = event ? (event.rows) : this.perPageLimit;
-    // this.offset = ((this.perPageLimit * page) - this.perPageLimit) + 1;
-    const filter: any = {
-      page: page || '1',
-      limit: event?.rows || '10',
+    this.filterObj = {
+      page: '1',
+      limit: '10',
       search: "",
       sortfield: "_id",
-      sortoption: "-1"
+      sortoption: "-1",
     };
-    this._seatingItemsService.getItemsList(filter).subscribe((result: any) => {
+    this.getEvent();
+    this._prepareItemsListForm();
+
+    this.search = _.debounce(this.search, 500);
+  }
+
+  test(searchText): void {
+    console.log(searchText);
+  }
+
+  getEvent(): void {
+    this.isLoading = true;
+    this._seatingItemsService.getItemsList(this.filterObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
-        // this.paging = result.Data;
         this.products = result.Data.docs;
+        const pagination: any = this._globalFunctions.copyObject(result.Data);
+        delete pagination.docs;
+        this.pagination = pagination;
       } else {
         this._globalFunctions.successErrorHandling(result, this, true);
       }
@@ -78,6 +91,24 @@ export class SeatingItemsComponent implements OnInit {
       this._globalFunctions.errorHanding(error, this, true);
       this.isLoading = false;
     });
+  }
+
+  sortField(event: any = ''): void {
+    this.filterObj.sortfield = event?.active || "_id";
+    this.filterObj.sortoption = event?.direction || "-1";
+    this.getEvent();
+  }
+
+  paginate(event: any): void {
+    const page = event ? (event.pageIndex + 1) : 1;
+    this.filterObj.page = page || '1';
+    this.filterObj.limit = event?.pageSize || '10';
+    this.getEvent();
+  }
+
+  search(event: any): void {
+    this.filterObj.search = event?.target?.value || '';
+    this.getEvent();
   }
 
   closeDetails(): void {
@@ -98,15 +129,11 @@ export class SeatingItemsComponent implements OnInit {
   showFlashMessage(type: 'success' | 'error'): void {
     // Show the message
     this.flashMessage = type;
-
     // Mark for check
     this._changeDetectorRef.markForCheck();
-
     // Hide it after 3 seconds
     setTimeout(() => {
-
       this.flashMessage = null;
-
       // Mark for check
       this._changeDetectorRef.markForCheck();
     }, 3000);
@@ -138,22 +165,20 @@ export class SeatingItemsComponent implements OnInit {
   removeAvatar(): void {
     // Get the form control for 'avatar'
     const itemImageFormControl = this.selectedItemsForm.get('itemimage');
-
     // Set the avatar as null
     itemImageFormControl.setValue(null);
-
     // Update the contact
     this.selectedProduct.itemimage = null;
   }
 
   updateSelectedProduct(itemsId: any = ''): void {
-    // if (this.selectedItemsForm.invalid) {
-    //   Object.keys(this.selectedItemsForm.controls).forEach((key) => {
-    //     this.selectedItemsForm.controls[key].touched = true;
-    //     this.selectedItemsForm.controls[key].markAsDirty();
-    //   });
-    //   return;
-    // }
+    if (this.selectedItemsForm.invalid) {
+      Object.keys(this.selectedItemsForm.controls).forEach((key) => {
+        this.selectedItemsForm.controls[key].touched = true;
+        this.selectedItemsForm.controls[key].markAsDirty();
+      });
+      return;
+    }
 
     const preparedItemsObj: any = this.prepareItemsObj(this.selectedItemsForm.value, itemsId);
     this._seatingItemsService.createAndUpdateItem(preparedItemsObj).subscribe((result: any) => {
@@ -166,6 +191,7 @@ export class SeatingItemsComponent implements OnInit {
           tmpProducts[index] = result?.Data;
         }
         this.products = [...this._globalFunctions.copyObject(tmpProducts)];
+        this.toggleDetails(tmpProducts);
       } else {
         this._globalFunctions.successErrorHandling(result, this, true);
       }
@@ -213,7 +239,12 @@ export class SeatingItemsComponent implements OnInit {
     });
   }
 
-  newAddItems(): void {
+  newAddItems(): any {
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'_id': ''}) == 0);
+    if (isFirstRecordEmpty) {
+      return false;
+    }
+    
     // Generate a new product
     const newProduct: InventoryProduct = {
       _id: '',

@@ -53,23 +53,23 @@ export class DiscountsComponent implements OnInit {
 
     this._prepareItemsListForm();
   }
-
+  
   getEvent(event: any = ''): void {
     this.isLoading = true;
-    const page = event ? (event.page + 1) : 1;
-    // this.perPageLimit = event ? (event.rows) : this.perPageLimit;
-    // this.offset = ((this.perPageLimit * page) - this.perPageLimit) + 1;
+    const page = event ? (event.pageIndex + 1) : 1;
     const filter: any = {
       page: page || '1',
-      limit: event?.rows || '10',
+      limit: event?.pageSize || '10',
       search: "",
-      sortfield: "_id",
-      sortoption: "-1"
+      sortfield: event?.active || "_id",
+      sortoption: event?.direction || "-1",
     };
     this._discountsService.getList(filter).subscribe((result: any) => {
       if (result && result.IsSuccess) {
-        // this.paging = result.Data;
         this.products = result.Data.docs;
+        const pagination: any = this._globalFunctions.copyObject(result.Data);
+        delete pagination.docs;
+        this.pagination = pagination;
       } else {
         this._globalFunctions.successErrorHandling(result, this, true);
       }
@@ -146,7 +146,7 @@ export class DiscountsComponent implements OnInit {
     });
   }
 
-  deleteSelectedProduct(id: any = ''): void {
+  deleteSelectedProduct(): void {
     // Open the confirmation dialog
     const confirmation = this._fuseConfirmationService.open({
       title: 'Delete product',
@@ -164,18 +164,14 @@ export class DiscountsComponent implements OnInit {
         // Get the product object
         const product = this.discountsForm.getRawValue();
         const index = this.products.findIndex((item: any) => item.id === product.discountid);
-        console.log(index);
-        
-
-        if (id != '' && index != -1) {
-          console.log('in');
+        if (product.discountid != '' && index != -1) {
           this.products.splice(index, 1);
           // Delete the product on the server
           this._discountsService.delete(product.discountid).subscribe(() => {
             // Close the details
             this.closeDetails();
           });
-        } else if (id == '') {
+        } else if (product.discountid == '') {
           this.products.splice(0, 1);
         }
         this.closeDetails();
@@ -203,14 +199,15 @@ export class DiscountsComponent implements OnInit {
   prepareItemsObj(shopObj: any, discountid: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
     preparedShopObj.discountid = discountid;
+    preparedShopObj.discounttype = 'discount_on_total_bill';
     return preparedShopObj;
   }
 
   private _prepareItemsListForm(itemsListObj: any = {}): void {
     this.discountsForm = this._formBuilder.group({
-      discountid    : [itemsListObj?.discountid || ''],
+      discountid    : [itemsListObj?._id || ''],
       discountname  : [itemsListObj?.discountname || '', [Validators.required]],
-      discounttype  : [itemsListObj?.discounttype || '', [Validators.required]],
+      discounttype  : [{value: itemsListObj?.discounttype || 'discount_on_total_bill', disabled: true}, [Validators.required]],
       description   : [itemsListObj?.description || '', [Validators.required]],
       discount      : [itemsListObj?.discount || '', [Validators.required]],
       status        : [itemsListObj?.status || false],
