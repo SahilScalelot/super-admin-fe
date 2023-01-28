@@ -174,7 +174,7 @@ export class PlatformsComponent implements OnInit {
       if (result && result.IsSuccess) {
         this.showFlashMessage('success');
         // this.products = result.Data.docs;
-        const index = (platformid == '') ? 0 : this.products.findIndex((item: InventoryProduct) => item.platformid === platformid);
+        const index = (platformid == '') ? 0 : this.products.findIndex((item: any) => item._id === platformid);
         const tmpProducts: any = this._globalFunctions.copyObject(this.products);
         if (index != -1) {
           tmpProducts[index] = result?.Data;
