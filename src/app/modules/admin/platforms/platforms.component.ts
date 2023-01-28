@@ -1,45 +1,49 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CONSTANTS } from 'app/layout/common/constants';
 import { GlobalFunctions } from 'app/layout/common/global-functions';
+import { Observable } from 'rxjs';
 import { MediaService } from '../media.service';
-import { EventCategoriesService } from './event-categories.service';
-import { Discounts } from './event-categories.types';
+import { PlatformsService } from './platforms.service';
+import { InventoryProduct } from './platforms.types';
 
 import * as _ from 'lodash';
-import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'event-categories',
-  templateUrl: './event-categories.component.html',
-  styleUrls: ['./event-categories.component.scss'],
+  selector: 'platforms',
+  templateUrl: './platforms.component.html',
+  styleUrls: ['./platforms.component.scss'],
   animations: fuseAnimations,
 })
-export class EventCategoriesComponent implements OnInit {
+export class PlatformsComponent implements OnInit {
+
+  @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
 
   isLoading: boolean = false;
+  isImageLoading: boolean = false;
   constants: any = CONSTANTS;
 
   searchInputControl: FormControl = new FormControl();
 
-  products: Discounts[] = [];
-  selectedProduct: Discounts;
-  discountsForm: any;
-
+  products: InventoryProduct[] = [];
+  selectedProduct: InventoryProduct;
+  selectedItemsForm: any;
   flashMessage: 'success' | 'error' | null = null;
 
   pagination: any = {};
   filterObj: any = {};
   results$: Observable<any>;
+
   /**
    * Constructor
    */
   constructor(
     private _formBuilder: FormBuilder,
-    private _eventCategoriesService: EventCategoriesService,
+    private _seatingItemsService: PlatformsService,
+    private _mediaService: MediaService,
     private _globalFunctions: GlobalFunctions,
 
     private _changeDetectorRef: ChangeDetectorRef,
@@ -59,10 +63,10 @@ export class EventCategoriesComponent implements OnInit {
 
     this.search = _.debounce(this.search, 500);
   }
-
+  
   getEvent(): void {
     this.isLoading = true;
-    this._eventCategoriesService.getList(this.filterObj).subscribe((result: any) => {
+    this._seatingItemsService.getList(this.filterObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.products = result.Data.docs;
         const pagination: any = this._globalFunctions.copyObject(result.Data);
@@ -102,7 +106,7 @@ export class EventCategoriesComponent implements OnInit {
 
   toggleDetails(item: any = {}): void {
     // If the product is already selected...
-    if (this.selectedProduct && this.selectedProduct.categoryid === item.categoryid) {
+    if (this.selectedProduct && this.selectedProduct.platformid === item.platformid) {
       // Close the details
       this.closeDetails();
       return;
@@ -124,20 +128,53 @@ export class EventCategoriesComponent implements OnInit {
     }, 3000);
   }
 
-  updateSelectedProduct(categoryid: any = ''): void {
-    if (this.discountsForm.invalid) {
-      Object.keys(this.discountsForm.controls).forEach((key) => {
-        this.discountsForm.controls[key].touched = true;
-        this.discountsForm.controls[key].markAsDirty();
+  uploadItemImage(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      this.isImageLoading = true;
+      const file = event.target.files[0];
+      const fileObj: any = new FormData();
+      fileObj.append('file', file);
+      this._mediaService.updateImage(fileObj).subscribe((result: any) => {
+        if (result && result.IsSuccess) {
+          this.selectedProduct.platformimage = result.Data.url;
+          const itemImageFormControl = this.selectedItemsForm.get('platformimage');
+          itemImageFormControl.setValue(result.Data.url);
+          // this._sNotify.success(result.msg, 'Success');
+          this.isImageLoading = false;
+        } else {
+          this._globalFunctions.successErrorHandling(result, this, true);
+        }
+      }, (error: any) => {
+        this.isImageLoading = false;
+        this._globalFunctions.errorHanding(error, this, true);
+      });
+    }
+  }
+
+  removeAvatar(): void {
+    // Get the form control for 'avatar'
+    const itemImageFormControl = this.selectedItemsForm.get('platformimage');
+    // Set the avatar as null
+    itemImageFormControl.setValue(null);
+    // Update the contact
+    this.selectedProduct.platformimage = null;
+  }
+
+  updateSelectedProduct(platformid: any = ''): void {
+    if (this.selectedItemsForm.invalid) {
+      Object.keys(this.selectedItemsForm.controls).forEach((key) => {
+        this.selectedItemsForm.controls[key].touched = true;
+        this.selectedItemsForm.controls[key].markAsDirty();
       });
       return;
     }
 
-    const preparedItemsObj: any = this.prepareItemsObj(this.discountsForm.value, categoryid);
-    this._eventCategoriesService.createAndUpdate(preparedItemsObj).subscribe((result: any) => {
+    const preparedItemsObj: any = this.prepareItemsObj(this.selectedItemsForm.value, platformid);
+    this._seatingItemsService.createAndUpdate(preparedItemsObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.showFlashMessage('success');
-        const index = (categoryid == '') ? 0 : this.products.findIndex((item: any) => item._id === categoryid);        
+        // this.products = result.Data.docs;
+        const index = (platformid == '') ? 0 : this.products.findIndex((item: InventoryProduct) => item.platformid === platformid);
         const tmpProducts: any = this._globalFunctions.copyObject(this.products);
         if (index != -1) {
           tmpProducts[index] = result?.Data;
@@ -145,7 +182,6 @@ export class EventCategoriesComponent implements OnInit {
         this.products = [...this._globalFunctions.copyObject(tmpProducts)];
         this.toggleDetails(tmpProducts);
       } else {
-        this.showFlashMessage('error');
         this._globalFunctions.successErrorHandling(result, this, true);
       }
       this.isLoading = false;
@@ -155,7 +191,7 @@ export class EventCategoriesComponent implements OnInit {
     });
   }
 
-  deleteSelectedProduct(): void {
+  deleteSelectedProduct(id: any = ''): void {
     // Open the confirmation dialog
     const confirmation = this._fuseConfirmationService.open({
       title: 'Delete product',
@@ -171,16 +207,18 @@ export class EventCategoriesComponent implements OnInit {
       // If the confirm button pressed...
       if (result === 'confirmed') {
         // Get the product object
-        const product = this.discountsForm.getRawValue();
-        const index = this.products.findIndex((item: any) => item.id === product.categoryid);
-        if (product.categoryid != '' && index != -1) {
+        const product = this.selectedItemsForm.getRawValue();
+        const index = this.products.findIndex((item: InventoryProduct) => item.platformid === product.platformid);
+
+        if (id != '' && index != -1) {
+          console.log('in');
           this.products.splice(index, 1);
           // Delete the product on the server
-          this._eventCategoriesService.delete(product.categoryid).subscribe(() => {
+          this._seatingItemsService.delete(product.platformid).subscribe(() => {
             // Close the details
             this.closeDetails();
           });
-        } else if (product.categoryid == '') {
+        } else if (id == '') {
           this.products.splice(0, 1);
         }
         this.closeDetails();
@@ -190,31 +228,37 @@ export class EventCategoriesComponent implements OnInit {
     });
   }
 
-  newAddItems(): void {
+  newAddItems(): any {
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'platformid': ''}) == 0);
+    if (isFirstRecordEmpty) {
+      return false;
+    }
+    
     // Generate a new product
-    const newProduct: Discounts = {
-      categoryid    : '',
-      categoryname  : '',
+    const newProduct: InventoryProduct = {
+      platformid    : '',
+      name          : '',
+      platformimage : '',
       description   : '',
-      event_type    : '',
       status        : false,
     };
     this.products.unshift(newProduct);
     this.toggleDetails(newProduct);
   }
 
-  prepareItemsObj(shopObj: any, categoryid: any): any {
+  prepareItemsObj(shopObj: any, platformid: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
-    preparedShopObj.categoryid = categoryid;
+    preparedShopObj.itemid = platformid;
+    preparedShopObj.platformimage = this.selectedProduct.platformimage;
     return preparedShopObj;
   }
 
   private _prepareItemsListForm(itemsListObj: any = {}): void {
-    this.discountsForm = this._formBuilder.group({
-      categoryid    : [itemsListObj?._id || ''],
-      categoryname  : [itemsListObj?.categoryname || '', [Validators.required]],
-      description  : [itemsListObj?.description || '', [Validators.required]],
-      event_type    : [itemsListObj?.event_type || '', [Validators.required]],
+    this.selectedItemsForm = this._formBuilder.group({
+      platformid    : [itemsListObj?._id || ''],
+      name          : [itemsListObj?.name || '', [Validators.required]],
+      platformimage : [itemsListObj?.platformimage || '', [Validators.required]],
+      description   : [itemsListObj?.description || ''],
       status        : [itemsListObj?.status || false],
     });
   }

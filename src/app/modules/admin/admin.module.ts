@@ -15,6 +15,7 @@ import { DiscountsComponent } from './discounts/discounts.component';
 import { EventCategoriesComponent } from './event-categories/event-categories.component';
 import { ShopCategoriesComponent } from './shop-categories/shop-categories.component';
 import { PromotionalPlansComponent } from './promotional-plans/promotional-plans.component';
+import { PlatformsComponent } from './platforms/platforms.component';
 
 const routes: Route[] = [
   {
@@ -32,6 +33,9 @@ const routes: Route[] = [
   },{
     path: 'promotion-plans',
     component: PromotionalPlansComponent
+  },{
+    path: 'platforms',
+    component: PlatformsComponent
   }
 ];
 
@@ -41,7 +45,8 @@ const routes: Route[] = [
     DiscountsComponent,
     EventCategoriesComponent,
     ShopCategoriesComponent,
-    PromotionalPlansComponent
+    PromotionalPlansComponent,
+    PlatformsComponent
   ],
   imports: [
     RouterModule.forChild(routes),
