@@ -12,6 +12,9 @@ import { SharedModule } from 'app/shared/shared.module';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DiscountsComponent } from './discounts/discounts.component';
+import { EventCategoriesComponent } from './event-categories/event-categories.component';
+import { ShopCategoriesComponent } from './shop-categories/shop-categories.component';
+import { PromotionalPlansComponent } from './promotional-plans/promotional-plans.component';
 
 const routes: Route[] = [
   {
@@ -20,13 +23,25 @@ const routes: Route[] = [
   },{
     path: 'discounts',
     component: DiscountsComponent
+  },{
+    path: 'event-categories',
+    component: EventCategoriesComponent
+  },{
+    path: 'shop-categories',
+    component: ShopCategoriesComponent
+  },{
+    path: 'promotion-plans',
+    component: PromotionalPlansComponent
   }
 ];
 
 @NgModule({
   declarations: [
     SeatingItemsComponent,
-    DiscountsComponent
+    DiscountsComponent,
+    EventCategoriesComponent,
+    ShopCategoriesComponent,
+    PromotionalPlansComponent
   ],
   imports: [
     RouterModule.forChild(routes),

@@ -9,62 +9,85 @@ import { MediaService } from '../media.service';
 import { DiscountsService } from './discounts.service';
 import { Discounts } from './discounts.types';
 
+import * as _ from 'lodash';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'discounts',
   templateUrl: './discounts.component.html',
   styleUrls: ['./discounts.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
   animations: fuseAnimations,
-  // encapsulation: ViewEncapsulation.None
 })
 export class DiscountsComponent implements OnInit {
-  
-  @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
 
   isLoading: boolean = false;
-  isImageLoading: boolean = false;
   constants: any = CONSTANTS;
 
   searchInputControl: FormControl = new FormControl();
 
   products: Discounts[] = [];
   selectedProduct: Discounts;
-  pagination: any = {};
   discountsForm: any;
 
   flashMessage: 'success' | 'error' | null = null;
+
+  pagination: any = {};
+  filterObj: any = {};
+  results$: Observable<any>;
   /**
    * Constructor
    */
   constructor(
     private _formBuilder: FormBuilder,
     private _discountsService: DiscountsService,
-    private _mediaService: MediaService,
-    private _router: Router,
     private _globalFunctions: GlobalFunctions,
 
     private _changeDetectorRef: ChangeDetectorRef,
     private _fuseConfirmationService: FuseConfirmationService,
-    /* private _sNotify: SnotifyService, */
   ) { }
 
   ngOnInit(): void {
-    this.getEvent();
-
-    this._prepareItemsListForm();
-  }
-  
-  getEvent(event: any = ''): void {
-    this.isLoading = true;
-    const page = event ? (event.pageIndex + 1) : 1;
-    const filter: any = {
-      page: page || '1',
-      limit: event?.pageSize || '10',
+    this.filterObj = {
+      page: '1',
+      limit: '10',
       search: "",
-      sortfield: event?.active || "_id",
-      sortoption: event?.direction || "-1",
+      sortfield: "_id",
+      sortoption: "-1",
     };
-    this._discountsService.getList(filter).subscribe((result: any) => {
+    this.getEvent();
+    this._prepareItemsListForm();
+
+    this.search = _.debounce(this.search, 500);
+  }
+
+  // getEvent(event: any = ''): void {
+  //   this.isLoading = true;
+  //   const page = event ? (event.pageIndex + 1) : 1;
+  //   const filter: any = {
+  //     page: page || '1',
+  //     limit: event?.pageSize || '10',
+  //     search: "",
+  //     sortfield: event?.active || "_id",
+  //     sortoption: event?.direction || "-1",
+  //   };
+  //   this._discountsService.getList(filter).subscribe((result: any) => {
+  //     if (result && result.IsSuccess) {
+  //       this.products = result.Data.docs;
+  //       const pagination: any = this._globalFunctions.copyObject(result.Data);
+  //       delete pagination.docs;
+  //       this.pagination = pagination;
+  //     } else {
+  //       this._globalFunctions.successErrorHandling(result, this, true);
+  //     }
+  //     this.isLoading = false;
+  //   }, (error: any) => {
+  //     this._globalFunctions.errorHanding(error, this, true);
+  //     this.isLoading = false;
+  //   });
+  // }
+  getEvent(): void {
+    this.isLoading = true;
+    this._discountsService.getList(this.filterObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.products = result.Data.docs;
         const pagination: any = this._globalFunctions.copyObject(result.Data);
@@ -78,6 +101,24 @@ export class DiscountsComponent implements OnInit {
       this._globalFunctions.errorHanding(error, this, true);
       this.isLoading = false;
     });
+  }
+
+  sortField(event: any = ''): void {
+    this.filterObj.sortfield = event?.active || "_id";
+    this.filterObj.sortoption = event?.direction || "-1";
+    this.getEvent();
+  }
+
+  paginate(event: any): void {
+    const page = event ? (event.pageIndex + 1) : 1;
+    this.filterObj.page = page || '1';
+    this.filterObj.limit = event?.pageSize || '10';
+    this.getEvent();
+  }
+
+  search(event: any): void {
+    this.filterObj.search = event?.target?.value || '';
+    this.getEvent();
   }
 
   closeDetails(): void {
@@ -98,43 +139,36 @@ export class DiscountsComponent implements OnInit {
   showFlashMessage(type: 'success' | 'error'): void {
     // Show the message
     this.flashMessage = type;
-
     // Mark for check
     this._changeDetectorRef.markForCheck();
-
     // Hide it after 3 seconds
     setTimeout(() => {
-
       this.flashMessage = null;
-
       // Mark for check
       this._changeDetectorRef.markForCheck();
     }, 3000);
   }
 
   updateSelectedProduct(discountId: any = ''): void {
-    // if (this.discountsForm.invalid) {
-    //   Object.keys(this.discountsForm.controls).forEach((key) => {
-    //     this.discountsForm.controls[key].touched = true;
-    //     this.discountsForm.controls[key].markAsDirty();
-    //   });
-    //   return;
-    // }
+    if (this.discountsForm.invalid) {
+      Object.keys(this.discountsForm.controls).forEach((key) => {
+        this.discountsForm.controls[key].touched = true;
+        this.discountsForm.controls[key].markAsDirty();
+      });
+      return;
+    }
 
     const preparedItemsObj: any = this.prepareItemsObj(this.discountsForm.value, discountId);
     this._discountsService.createAndUpdate(preparedItemsObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.showFlashMessage('success');
-        // this.products = result.Data.docs;
         const index = (discountId == '') ? 0 : this.products.findIndex((item: any) => item._id === discountId);
-        console.log(index);
-        console.log(this.products);
-        
         const tmpProducts: any = this._globalFunctions.copyObject(this.products);
         if (index != -1) {
           tmpProducts[index] = result?.Data;
         }
         this.products = [...this._globalFunctions.copyObject(tmpProducts)];
+        this.toggleDetails(tmpProducts);
       } else {
         this.showFlashMessage('error');
         this._globalFunctions.successErrorHandling(result, this, true);

@@ -21,12 +21,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon : 'heroicons_outline:view-grid-add',
         link : '/admin/event-categories'
     },{
-        id   : 'mediaUploader',
-        title: 'Media Uploader',
-        type : 'basic',
-        icon : 'heroicons_outline:upload',
-        link : '/admin/media-uploader'
-    },{
+    //     id   : 'mediaUploader',
+    //     title: 'Media Uploader',
+    //     type : 'basic',
+    //     icon : 'heroicons_outline:upload',
+    //     link : '/admin/media-uploader'
+    // },{
         id   : 'shopCategories',
         title: 'Shop Categories',
         type : 'basic',
