@@ -7,7 +7,7 @@
       <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
     </div>
     <!-- Title -->
-    <div class="text-4xl font-extrabold tracking-tight">Seating Items</div>
+    <div class="text-4xl font-extrabold tracking-tight">Platforms</div>
     <!-- Actions -->
     <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
       <!-- Search -->
@@ -127,7 +127,7 @@
                         <div>
                           <input id="avatar-file-input" class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
                             type="file" [multiple]="false" [accept]="'image/jpeg, image/png'"
-                            (change)="uploadplatformimage($event)" #avatarFileInput>
+                            (change)="uploadItemImage($event)" #avatarFileInput>
                           <label
                             class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
                             for="avatar-file-input" matRipple>
