@@ -18,8 +18,8 @@ export class PlatformsService {
     return this.http.post(environment.appURL + 'superadmin/platform/save', platformObj, this._globalFunctions.getAuthorizationHeader());
   }
 
-  delete(categoryid: any = ''): any {
-    return this.http.post(environment.appURL + 'superadmin/platform/remove', {categoryid: categoryid}, this._globalFunctions.getAuthorizationHeader());
+  delete(platformid: any = ''): any {
+    return this.http.post(environment.appURL + 'superadmin/platform/remove', {platformid: platformid}, this._globalFunctions.getAuthorizationHeader());
   }
 
   // liveMultipleEvents(eventIds: any = []): any {

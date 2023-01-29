@@ -208,10 +208,8 @@ export class PlatformsComponent implements OnInit {
       if (result === 'confirmed') {
         // Get the product object
         const product = this.selectedItemsForm.getRawValue();
-        const index = this.products.findIndex((item: InventoryProduct) => item.platformid === product.platformid);
-
+        const index = this.products.findIndex((item: any) => item._id === product.platformid);
         if (id != '' && index != -1) {
-          console.log('in');
           this.products.splice(index, 1);
           // Delete the product on the server
           this._seatingItemsService.delete(product.platformid).subscribe(() => {

@@ -211,7 +211,6 @@ export class SeatingItemsComponent implements OnInit {
         const index = this.products.findIndex((item: InventoryProduct) => item._id === product.itemid);
 
         if (id != '' && index != -1) {
-          console.log('in');
           this.products.splice(index, 1);
           // Delete the product on the server
           this._seatingItemsService.deleteItem(product.itemid).subscribe(() => {
