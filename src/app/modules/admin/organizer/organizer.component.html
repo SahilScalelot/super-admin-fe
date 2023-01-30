@@ -1,0 +1,167 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
+
+  <!-- Header -->
+  <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+    <!-- Loader -->
+    <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+      <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+    </div>
+    <!-- Title -->
+    <div class="text-4xl font-extrabold tracking-tight">Organizers</div>
+    <!-- Actions -->
+    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+      <!-- Search -->
+      <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded min-w-64">
+        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
+        <input matInput [autocomplete]="'off'" [placeholder]="'Search products'" (keyup)="search($event)">
+        <!-- [formControl]="searchInputControl" -->
+      </mat-form-field>
+      <!-- Add product button -->
+      <!-- <button class="ml-4" mat-flat-button [color]="'primary'" (click)="newAddItems()">
+        <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+        <span class="ml-2 mr-1">Add</span>
+      </button> -->
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="flex flex-auto overflow-hidden">
+    <!-- Products list -->
+    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+      <ng-container>
+        <ng-container *ngIf="products && products.length > 0; else noProducts">
+          <div class="grid">
+            <!-- Header -->
+            <div
+              class="inventory-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
+              matSort matSortDisableClear (matSortChange)="sortField($event)">
+              <div [mat-sort-header]="'name'">Name</div>
+              <div class="hidden lg:block" [mat-sort-header]="'email'">Email</div>
+              <div class="hidden lg:block" [mat-sort-header]="'mobile'">Mobile No.</div>
+              <div class="hidden lg:block" [mat-sort-header]="'is_approved'">Is Approved</div>
+              <div class="hidden lg:block" [mat-sort-header]="'status'">Status</div>
+              <div class="hidden sm:block" [mat-sort-header]="'_id'">Details</div>
+            </div>
+            <!-- Rows -->
+            <ng-container>
+              <ng-container *ngFor="let product of products;">
+
+                <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
+                  <!-- Name -->
+                  <div class="truncate">{{product.name}}</div>
+                  <div class="truncate">{{product.email}}</div>
+                  <div class="truncate">{{product.country_code + ' ' + product.mobile}}</div>
+                  <!-- Active -->
+                  <div class="hidden lg:block">
+                    <ng-container *ngIf="product.is_approved">
+                      <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                    </ng-container>
+                    <ng-container *ngIf="!product.is_approved">
+                      <mat-icon class="text-gray-400 icon-size-5" [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                    </ng-container>
+                  </div>
+                  <!-- Active -->
+                  <div class="hidden lg:block">
+                    <ng-container *ngIf="product.status">
+                      <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                    </ng-container>
+                    <ng-container *ngIf="!product.status">
+                      <mat-icon class="text-gray-400 icon-size-5" [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                    </ng-container>
+                  </div>
+                  <!-- Details button -->
+                  <div><button class="min-w-10 min-h-7 h-7 px-2 leading-6" mat-stroked-button (click)="toggleDetails(product, true)"> <mat-icon class="icon-size-5" [svgIcon]="selectedProduct?.id === product.id ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon></button></div>
+                </div>
+
+                <div class="grid">
+                  <ng-container *ngIf="selectedProduct?._id === product._id">
+                    <ng-container *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: product}"></ng-container>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+
+          <mat-paginator
+            class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+            (page)="paginate($event)"
+            [ngClass]="{'pointer-events-none': isLoading}" 
+            [length]="pagination?.totalDocs || 0" 
+            [pageIndex]="pagination?.page - 1 || 0"
+            [pageSize]="pagination?.limit || 10" 
+            [pageSizeOptions]="[10, 20, 30, 50]" 
+            [showFirstLastButtons]="true"></mat-paginator>
+
+        </ng-container>
+      </ng-container>
+
+      <ng-template #rowDetailsTemplate let-product>
+        <div class="shadow-lg overflow-hidden">
+          <div class="flex border-b">
+            <!-- Selected product form -->
+            <div class="flex flex-col w-full">
+
+              <div class="flex flex-wrap p-8">
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Name</span>
+                  <span class="w-2/3"><b class="mr-2">:</b> {{selectedProduct.name}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Email</span>
+                  <span class="w-2/3"><b class="mr-2">:</b> {{(selectedProduct.email) ? selectedProduct.email : 'N/A'}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Mobile</span>
+                  <span class="w-2/3"><b class="mr-2">:</b> {{selectedProduct.country_code + ' ' + selectedProduct.mobile}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Refer Code</span>
+                  <span class="w-2/3"><b class="mr-2">:</b> {{(selectedProduct.refer_code) ? selectedProduct.refer_code : 'N/A'}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">My Refer Code</span>
+                  <span class="w-2/3"><b class="mr-2">:</b> {{selectedProduct.my_refer_code}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Status</span>
+                  <span class="w-2/3"><b class="mr-2">:</b> {{selectedProduct.status}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Is Approved</span>
+                  <span class="w-2/3"><b class="mr-2">:</b> {{selectedProduct.is_approved}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Mobile Verified</span>
+                  <span class="w-2/3"><b class="mr-2">:</b> {{selectedProduct.mobileverified}}</span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between w-full border-t px-8 py-4">
+                <button class="-ml-4" mat-button [color]="'warn'" (click)="deleteSelectedProduct()"> Delete </button>
+                <div class="flex items-center">
+                  <div class="flex items-center mr-4" *ngIf="flashMessage">
+                    <ng-container *ngIf="flashMessage === 'success'">
+                      <mat-icon class="text-green-500" [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                      <span class="ml-2">{{selectedProduct?.name}} is approve</span>
+                    </ng-container>
+                    <ng-container *ngIf="flashMessage === 'error'">
+                      <mat-icon class="text-red-500" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                      <span class="ml-2">An error occurred, try again!</span>
+                    </ng-container>
+                  </div>
+                  <button mat-flat-button [color]="'primary'" class="ml-4" (click)="approve(selectedProduct)" *ngIf="!selectedProduct.is_approved">Approve</button>
+                  <button mat-flat-button [color]="'accent'" class="ml-4" (click)="disapprove(selectedProduct)" *ngIf="selectedProduct.is_approved">Disapprove</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #noProducts>
+        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no products!</div>
+      </ng-template>
+    </div>
+  </div>
+</div>

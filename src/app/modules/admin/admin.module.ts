@@ -21,6 +21,7 @@ import { NotificationCouponsComponent } from './notification-coupons/notificatio
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { EventBookingCouponsComponent } from './event-booking-coupons/event-booking-coupons.component';
+import { OrganizerComponent } from './organizer/organizer.component';
 
 const routes: Route[] = [
   {
@@ -50,6 +51,9 @@ const routes: Route[] = [
   },{
     path: 'event-booking-coupons',
     component: EventBookingCouponsComponent
+  },{
+    path: 'organizer',
+    component: OrganizerComponent
   }
 ];
 
@@ -63,7 +67,8 @@ const routes: Route[] = [
     PlatformsComponent,
     SubscriptionsComponent,
     NotificationCouponsComponent,
-    EventBookingCouponsComponent
+    EventBookingCouponsComponent,
+    OrganizerComponent
   ],
   imports: [
     RouterModule.forChild(routes),
