@@ -22,7 +22,4 @@ export class EventCategoriesService {
     return this.http.post(environment.appURL + 'superadmin/eventcategories/remove', {categoryid: categoryid}, this._globalFunctions.getAuthorizationHeader());
   }
 
-  // liveMultipleEvents(eventIds: any = []): any {
-  //   return this.http.post(environment.appURL + 'organizer/events/livemulti', {eventids: eventIds}, this._globalFunctions.getAuthorizationHeader());
-  // }
 }

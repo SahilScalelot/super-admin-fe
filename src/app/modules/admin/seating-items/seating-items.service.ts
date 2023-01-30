@@ -22,7 +22,4 @@ export class SeatingItemsService {
     return this.http.post(environment.appURL + 'superadmin/item/remove', {itemid: itemsId}, this._globalFunctions.getAuthorizationHeader());
   }
 
-  // liveMultipleEvents(eventIds: any = []): any {
-  //   return this.http.post(environment.appURL + 'organizer/events/livemulti', {eventids: eventIds}, this._globalFunctions.getAuthorizationHeader());
-  // }
 }

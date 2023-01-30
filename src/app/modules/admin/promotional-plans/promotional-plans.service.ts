@@ -22,7 +22,4 @@ export class PromotionalPlansService {
     return this.http.post(environment.appURL + 'superadmin/promotionplans/remove', {planid: categoryid}, this._globalFunctions.getAuthorizationHeader());
   }
 
-  // liveMultipleEvents(eventIds: any = []): any {
-  //   return this.http.post(environment.appURL + 'organizer/events/livemulti', {eventids: eventIds}, this._globalFunctions.getAuthorizationHeader());
-  // }
 }

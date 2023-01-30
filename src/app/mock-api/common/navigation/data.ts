@@ -44,12 +44,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:template',
         link : '/admin/platforms'
-    },{
-        id   : 'subscriptionPlans',
-        title: 'Subscription Plans',
-        type : 'basic',
-        icon : 'mat_outline:local_play',
-        link : '/admin/subscription-plans'
+    // },{
+    //     id   : 'subscriptionPlans',
+    //     title: 'Subscription Plans',
+    //     type : 'basic',
+    //     icon : 'mat_outline:local_play',
+    //     link : '/admin/subscription-plans'
     },{
         id   : 'notificationCoupons',
         title: 'Notification Coupons',

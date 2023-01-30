@@ -6,19 +6,20 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CONSTANTS } from 'app/layout/common/constants';
 import { GlobalFunctions } from 'app/layout/common/global-functions';
 import { MediaService } from '../media.service';
-import { DiscountsService } from './discounts.service';
-import { InventoryProduct } from './discounts.types';
+import { NotificationCouponsService } from './notification-coupons.service';
+import { InventoryProduct } from './notification-coupons.types';
+import * as moment from 'moment';
 
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'discounts',
-  templateUrl: './discounts.component.html',
-  styleUrls: ['./discounts.component.scss'],
+  selector: 'notification-coupons',
+  templateUrl: './notification-coupons.component.html',
+  styleUrls: ['./notification-coupons.component.scss'],
   animations: fuseAnimations,
 })
-export class DiscountsComponent implements OnInit {
+export class NotificationCouponsComponent implements OnInit {
 
   isLoading: boolean = false;
   constants: any = CONSTANTS;
@@ -39,7 +40,7 @@ export class DiscountsComponent implements OnInit {
    */
   constructor(
     private _formBuilder: FormBuilder,
-    private _discountsService: DiscountsService,
+    private _promotionalPlansService: NotificationCouponsService,
     private _globalFunctions: GlobalFunctions,
 
     private _changeDetectorRef: ChangeDetectorRef,
@@ -60,34 +61,9 @@ export class DiscountsComponent implements OnInit {
     this.search = _.debounce(this.search, 500);
   }
 
-  // getEvent(event: any = ''): void {
-  //   this.isLoading = true;
-  //   const page = event ? (event.pageIndex + 1) : 1;
-  //   const filter: any = {
-  //     page: page || '1',
-  //     limit: event?.pageSize || '10',
-  //     search: "",
-  //     sortfield: event?.active || "_id",
-  //     sortoption: event?.direction || "-1",
-  //   };
-  //   this._discountsService.getList(filter).subscribe((result: any) => {
-  //     if (result && result.IsSuccess) {
-  //       this.products = result.Data.docs;
-  //       const pagination: any = this._globalFunctions.copyObject(result.Data);
-  //       delete pagination.docs;
-  //       this.pagination = pagination;
-  //     } else {
-  //       this._globalFunctions.successErrorHandling(result, this, true);
-  //     }
-  //     this.isLoading = false;
-  //   }, (error: any) => {
-  //     this._globalFunctions.errorHanding(error, this, true);
-  //     this.isLoading = false;
-  //   });
-  // }
   getEvent(): void {
     this.isLoading = true;
-    this._discountsService.getList(this.filterObj).subscribe((result: any) => {
+    this._promotionalPlansService.getList(this.filterObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.products = result.Data.docs;
         const pagination: any = this._globalFunctions.copyObject(result.Data);
@@ -127,7 +103,7 @@ export class DiscountsComponent implements OnInit {
 
   toggleDetails(item: any = {}): void {
     // If the product is already selected...
-    if (this.selectedProduct && this.selectedProduct.discountid === item.discountid) {
+    if (this.selectedProduct && this.selectedProduct.notificationcouponid === item.notificationcouponid) {
       // Close the details
       this.closeDetails();
       return;
@@ -149,7 +125,7 @@ export class DiscountsComponent implements OnInit {
     }, 3000);
   }
 
-  updateSelectedProduct(discountId: any = ''): void {
+  updateSelectedProduct(notificationcouponid: any = ''): void {
     if (this.discountsForm.invalid) {
       Object.keys(this.discountsForm.controls).forEach((key) => {
         this.discountsForm.controls[key].touched = true;
@@ -158,11 +134,11 @@ export class DiscountsComponent implements OnInit {
       return;
     }
 
-    const preparedItemsObj: any = this.prepareItemsObj(this.discountsForm.value, discountId);
-    this._discountsService.createAndUpdate(preparedItemsObj).subscribe((result: any) => {
+    const preparedItemsObj: any = this.prepareItemsObj(this.discountsForm.value, notificationcouponid);
+    this._promotionalPlansService.createAndUpdate(preparedItemsObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.showFlashMessage('success');
-        const index = (discountId == '') ? 0 : this.products.findIndex((item: any) => item._id === discountId);
+        const index = (notificationcouponid == '') ? 0 : this.products.findIndex((item: any) => item._id === notificationcouponid);        
         const tmpProducts: any = this._globalFunctions.copyObject(this.products);
         if (index != -1) {
           tmpProducts[index] = result?.Data;
@@ -197,15 +173,15 @@ export class DiscountsComponent implements OnInit {
       if (result === 'confirmed') {
         // Get the product object
         const product = this.discountsForm.getRawValue();
-        const index = this.products.findIndex((item: any) => item.id === product.discountid);
-        if (product.discountid != '' && index != -1) {
+        const index = this.products.findIndex((item: any) => item.id === product.notificationcouponid);
+        if (product.notificationcouponid != '' && index != -1) {
           this.products.splice(index, 1);
           // Delete the product on the server
-          this._discountsService.delete(product.discountid).subscribe(() => {
+          this._promotionalPlansService.delete(product.notificationcouponid).subscribe(() => {
             // Close the details
             this.closeDetails();
           });
-        } else if (product.discountid == '') {
+        } else if (product.notificationcouponid == '') {
           this.products.splice(0, 1);
         }
         this.closeDetails();
@@ -217,35 +193,38 @@ export class DiscountsComponent implements OnInit {
 
   newAddItems(): void {
     // Generate a new product
-    const newProduct: InventoryProduct = {
-      discountid    : '',
-      discountname  : '',
-      discounttype  : '',
-      description   : '',
-      discount      : '',
-      status        : false,
-      tandc         : '',
+    const newProduct: InventoryProduct = {    "notificationcouponid" : "",
+      code                 : "",
+      description          : "",
+      amount               : "",
+      percentage           : "",
+      limit                : "",
+      expiry_date          : "",
+      expiry_time          : "",
+      status               : false,
     };
     this.products.unshift(newProduct);
     this.toggleDetails(newProduct);
   }
 
-  prepareItemsObj(shopObj: any, discountid: any): any {
+  prepareItemsObj(shopObj: any, notificationcouponid: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
-    preparedShopObj.discountid = discountid;
-    preparedShopObj.discounttype = 'discount_on_total_bill';
+    preparedShopObj.notificationcouponid = notificationcouponid;
+    preparedShopObj.expiry_date = moment(shopObj.expiry_date).format('YYYY-MM-DD');
     return preparedShopObj;
   }
 
   private _prepareItemsListForm(itemsListObj: any = {}): void {
     this.discountsForm = this._formBuilder.group({
-      discountid    : [itemsListObj?._id || ''],
-      discountname  : [itemsListObj?.discountname || '', [Validators.required]],
-      discounttype  : [{value: itemsListObj?.discounttype || 'discount_on_total_bill', disabled: true}, [Validators.required]],
-      description   : [itemsListObj?.description || '', [Validators.required]],
-      discount      : [itemsListObj?.discount || '', [Validators.required]],
-      status        : [itemsListObj?.status || false],
-      tandc         : [itemsListObj?.tandc || '', [Validators.required]],
+      notificationcouponid : [itemsListObj?._id         || ''],
+      code                 : [itemsListObj?.code        || '', [Validators.required]],
+      description          : [itemsListObj?.description || '', [Validators.required]],
+      amount               : [itemsListObj?.amount      || '', [Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+      percentage           : [itemsListObj?.percentage  || '', [Validators.max(100), Validators.min(0)]],
+      limit                : [itemsListObj?.limit       || '', [Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+      expiry_date          : [itemsListObj?.expiry_date || ''],
+      expiry_time          : [itemsListObj?.expiry_time || ''],
+      status               : [itemsListObj?.status      || false],
     });
   }
 

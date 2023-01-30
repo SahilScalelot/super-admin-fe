@@ -22,7 +22,4 @@ export class DiscountsService {
     return this.http.post(environment.appURL + 'superadmin/discount/remove', {discountid: discountId}, this._globalFunctions.getAuthorizationHeader());
   }
 
-  // liveMultipleEvents(eventIds: any = []): any {
-  //   return this.http.post(environment.appURL + 'organizer/events/livemulti', {eventids: eventIds}, this._globalFunctions.getAuthorizationHeader());
-  // }
 }

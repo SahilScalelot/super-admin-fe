@@ -22,7 +22,4 @@ export class PlatformsService {
     return this.http.post(environment.appURL + 'superadmin/platform/remove', {platformid: platformid}, this._globalFunctions.getAuthorizationHeader());
   }
 
-  // liveMultipleEvents(eventIds: any = []): any {
-  //   return this.http.post(environment.appURL + 'organizer/events/livemulti', {eventids: eventIds}, this._globalFunctions.getAuthorizationHeader());
-  // }
 }

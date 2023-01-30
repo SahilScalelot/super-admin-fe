@@ -16,6 +16,11 @@ import { EventCategoriesComponent } from './event-categories/event-categories.co
 import { ShopCategoriesComponent } from './shop-categories/shop-categories.component';
 import { PromotionalPlansComponent } from './promotional-plans/promotional-plans.component';
 import { PlatformsComponent } from './platforms/platforms.component';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { NotificationCouponsComponent } from './notification-coupons/notification-coupons.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { EventBookingCouponsComponent } from './event-booking-coupons/event-booking-coupons.component';
 
 const routes: Route[] = [
   {
@@ -36,6 +41,15 @@ const routes: Route[] = [
   },{
     path: 'platforms',
     component: PlatformsComponent
+  },{
+    path: 'subscription-plans',
+    component: SubscriptionsComponent
+  },{
+    path: 'notification-coupons',
+    component: NotificationCouponsComponent
+  },{
+    path: 'event-booking-coupons',
+    component: EventBookingCouponsComponent
   }
 ];
 
@@ -46,7 +60,10 @@ const routes: Route[] = [
     EventCategoriesComponent,
     ShopCategoriesComponent,
     PromotionalPlansComponent,
-    PlatformsComponent
+    PlatformsComponent,
+    SubscriptionsComponent,
+    NotificationCouponsComponent,
+    EventBookingCouponsComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -60,7 +77,9 @@ const routes: Route[] = [
     MatSlideToggleModule,
     SharedModule,
     MatSortModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDatepickerModule,
+    MatMomentDateModule
   ]
 })
 export class AdminModule { }

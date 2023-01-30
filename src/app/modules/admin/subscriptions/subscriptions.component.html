@@ -7,7 +7,7 @@
       <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
     </div>
     <!-- Title -->
-    <div class="text-4xl font-extrabold tracking-tight">Promotion Plans</div>
+    <div class="text-4xl font-extrabold tracking-tight">Subscription Plans</div>
     <!-- Actions -->
     <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
       <!-- Search -->
@@ -37,11 +37,10 @@
               matSort matSortDisableClear (matSortChange)="sortField($event)">
               <div [mat-sort-header]="'planname'">Plan Name</div>
               <div class="hidden lg:block" [mat-sort-header]="'description'">Description</div>
-              <div class="hidden lg:block" [mat-sort-header]="'notification_amount'">Notification Amount</div>
-              <div class="hidden lg:block" [mat-sort-header]="'sms_amount'">SMS Amount</div>
-              <div class="hidden lg:block" [mat-sort-header]="'email_amount'">Email Amount</div>
-              <div class="hidden lg:block" [mat-sort-header]="'combo_amount'">Combo Amount</div>
-              <div class="hidden lg:block" [mat-sort-header]="'total_users'">Total Users</div>
+              <div class="hidden lg:block" [mat-sort-header]="'userlimitation'">User Limitation</div>
+              <div class="hidden lg:block" [mat-sort-header]="'price'">Price</div>
+              <div class="hidden lg:block" [mat-sort-header]="'no_of_events'">No Of Events</div>
+              <div class="hidden lg:block" [mat-sort-header]="'max_days'">Max Days</div>
               <div class="hidden lg:block" [mat-sort-header]="'status'">Status</div>
               <div class="hidden sm:block" [mat-sort-header]="'_id'">Details</div>
             </div>

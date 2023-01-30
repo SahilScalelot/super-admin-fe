@@ -22,7 +22,4 @@ export class ShopCategoriesService {
     return this.http.post(environment.appURL + 'superadmin/shopcategories/remove', {categoryid: categoryid}, this._globalFunctions.getAuthorizationHeader());
   }
 
-  // liveMultipleEvents(eventIds: any = []): any {
-  //   return this.http.post(environment.appURL + 'organizer/events/livemulti', {eventids: eventIds}, this._globalFunctions.getAuthorizationHeader());
-  // }
 }

@@ -7,7 +7,7 @@
       <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
     </div>
     <!-- Title -->
-    <div class="text-4xl font-extrabold tracking-tight">Promotion Plans</div>
+    <div class="text-4xl font-extrabold tracking-tight">Event Booking Coupons</div>Event-Booking-Coupons
     <!-- Actions -->
     <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
       <!-- Search -->
@@ -35,13 +35,13 @@
             <div
               class="inventory-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
               matSort matSortDisableClear (matSortChange)="sortField($event)">
-              <div [mat-sort-header]="'planname'">Plan Name</div>
+              <div [mat-sort-header]="'code'">Code</div>
               <div class="hidden lg:block" [mat-sort-header]="'description'">Description</div>
-              <div class="hidden lg:block" [mat-sort-header]="'notification_amount'">Notification Amount</div>
-              <div class="hidden lg:block" [mat-sort-header]="'sms_amount'">SMS Amount</div>
-              <div class="hidden lg:block" [mat-sort-header]="'email_amount'">Email Amount</div>
-              <div class="hidden lg:block" [mat-sort-header]="'combo_amount'">Combo Amount</div>
-              <div class="hidden lg:block" [mat-sort-header]="'total_users'">Total Users</div>
+              <div class="hidden lg:block" [mat-sort-header]="'amount'">Amount</div>
+              <div class="hidden lg:block" [mat-sort-header]="'percentage'">Percentage</div>
+              <div class="hidden lg:block" [mat-sort-header]="'limit'">Limit</div>
+              <div class="hidden lg:block" [mat-sort-header]="'expiry_date'">Expiry Date</div>
+              <div class="hidden lg:block" [mat-sort-header]="'expiry_time'">Expiry Time</div>
               <div class="hidden lg:block" [mat-sort-header]="'status'">Status</div>
               <div class="hidden sm:block" [mat-sort-header]="'_id'">Details</div>
             </div>
@@ -51,13 +51,13 @@
 
                 <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
                   <!-- Name -->
-                  <div class="truncate">{{product.planname}}</div>
+                  <div class="truncate">{{product.code}}</div>
                   <div class="truncate">{{product.description}}</div>
-                  <div class="truncate">{{product.notification_amount}}</div>
-                  <div class="truncate">{{product.sms_amount}}</div>
-                  <div class="truncate">{{product.email_amount}}</div>
-                  <div class="truncate">{{product.combo_amount}}</div>
-                  <div class="truncate">{{product.total_users}}</div>
+                  <div class="truncate">{{product.amount}}</div>
+                  <div class="truncate">{{product.percentage}}</div>
+                  <div class="truncate">{{product.limit}}</div>
+                  <div class="truncate">{{product.expiry_date | date:'dd MMM, yyyy'}}</div>
+                  <div class="truncate">{{product.expiry_time}}</div>
                   <!-- Active -->
                   <div class="hidden lg:block">
                     <ng-container *ngIf="product.status">
@@ -104,8 +104,8 @@
                 <div class="flex flex-auto flex-wrap">
                   <div class="flex flex-col w-full md:w-2/3 xl:w-4/5 px-4">
                     <mat-form-field class="w-full">
-                      <mat-label>Plan Name</mat-label>
-                      <input matInput [formControlName]="'planname'">
+                      <mat-label>Code</mat-label>
+                      <input matInput [formControlName]="'code'">
                     </mat-form-field>
                   </div>
                   <div class="flex flex-col w-full md:w-1/3 xl:w-1/5 px-4">
@@ -116,32 +116,34 @@
                   </div>
                   <div class="flex flex-col w-full md:w-1/3 xl:w-1/5 px-4">
                     <mat-form-field class="w-full">
-                      <mat-label>Notification Amount</mat-label>
-                      <input matInput [formControlName]="'notification_amount'">
+                      <mat-label>Amount</mat-label>
+                      <input matInput [formControlName]="'amount'">
                     </mat-form-field>
                   </div>
                   <div class="flex flex-col w-full md:w-1/3 xl:w-1/5 px-4">
                     <mat-form-field class="w-full">
-                      <mat-label>SMS Amount</mat-label>
-                      <input matInput [formControlName]="'sms_amount'">
+                      <mat-label>Percentage</mat-label>
+                      <input matInput [formControlName]="'percentage'">
                     </mat-form-field>
                   </div>
                   <div class="flex flex-col w-full md:w-1/3 xl:w-1/5 px-4">
                     <mat-form-field class="w-full">
-                      <mat-label>Email Amount</mat-label>
-                      <input matInput [formControlName]="'email_amount'">
+                      <mat-label>Limit</mat-label>
+                      <input matInput [formControlName]="'limit'">
+                    </mat-form-field>
+                  </div>
+                  <div class="flex flex-col w-full md:w-1/3 xl:w-1/5 px-4">
+                    <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto">
+                      <mat-label>Expiry Date</mat-label>
+                      <input matInput [formControlName]="'expiry_date'" [matDatepicker]="picker1">
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
                     </mat-form-field>
                   </div>
                   <div class="flex flex-col w-full md:w-1/3 xl:w-1/5 px-4">
                     <mat-form-field class="w-full">
-                      <mat-label>Combo Amount</mat-label>
-                      <input matInput [formControlName]="'combo_amount'">
-                    </mat-form-field>
-                  </div>
-                  <div class="flex flex-col w-full md:w-1/3 xl:w-1/5 px-4">
-                    <mat-form-field class="w-full">
-                      <mat-label>Total Users</mat-label>
-                      <input matInput [formControlName]="'total_users'">
+                      <mat-label>Expiry Time</mat-label>
+                      <input matInput type="time" [formControlName]="'expiry_time'">
                     </mat-form-field>
                   </div>
                   <div class="flex flex-col w-full px-4">
