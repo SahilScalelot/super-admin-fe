@@ -1,13 +1,15 @@
-import { Route } from '@angular/router';
+import { Route, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { appConfig } from 'app/core/config/app.config';
+import { NgModule } from '@angular/core';
 
 // @formatter:off
 // tslint:disable:max-line-length
-export const appRoutes: Route[] = [
+// const appRoutes: Route[] = [
+const routes: Routes = [
 
     // Redirect empty path to '/example'
     {path: '', pathMatch : 'full', redirectTo: 'admin'},
@@ -81,3 +83,9 @@ export const appRoutes: Route[] = [
         ]
     }
 ];
+
+@NgModule({
+    imports: [RouterModule.forRoot(routes, { useHash: true })],
+    exports: [RouterModule]
+})
+export class appRoutes { }
