@@ -140,16 +140,16 @@ export class OrganizerComponent implements OnInit {
       // If the confirm button pressed...
       if (result === 'confirmed') {
         // Get the product object
-        const product = this.discountsForm.getRawValue();
-        const index = this.products.findIndex((item: any) => item.id === product.organizerid);
-        if (product.organizerid != '' && index != -1) {
+        const product = organizerObj;
+        const index = this.products.findIndex((item: any) => item.id === product._id);
+        if (product._id != '' && index != -1) {
           this.products.splice(index, 1);
           // Delete the product on the server
-          this._shopCategoriesService.approve(product.organizerid).subscribe(() => {
+          this._shopCategoriesService.approve(product._id).subscribe(() => {
             // Close the details
             this.closeDetails();
           });
-        } else if (product.organizerid == '') {
+        } else if (product._id == '') {
           this.products.splice(0, 1);
         }
         this.closeDetails();
@@ -177,15 +177,13 @@ export class OrganizerComponent implements OnInit {
         // Get the product object
         const product = organizerObj;
         // console.log(product);
-        // const index = this.products.findIndex((item: any) => item._id === product._id);
+        const index = this.products.findIndex((item: any) => item._id === product._id);
         
-        this._shopCategoriesService.disapprove(product._id).subscribe(() => {
-        });
-        // if (product._id != '' && index != -1) {
-        //   // Delete the product on the server
-        // } else if (product._id == '') {
-        //   this.products.splice(0, 1);
-        // }
+        if (product._id != '' && index != -1) {
+          this._shopCategoriesService.disapprove(product._id).subscribe((result: any) => {
+            console.log(result);
+          });
+        }
         this.closeDetails();
       } else {
         this.closeDetails();
