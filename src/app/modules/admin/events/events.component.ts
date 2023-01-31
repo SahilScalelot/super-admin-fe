@@ -4,18 +4,18 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CONSTANTS } from 'app/layout/common/constants';
 import { GlobalFunctions } from 'app/layout/common/global-functions';
-import { OrganizerService } from './organizer.service';
 
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
+import { EventsService } from './events.service';
 
 @Component({
-  selector: 'organizer',
-  templateUrl: './organizer.component.html',
-  styleUrls: ['./organizer.component.scss'],
+  selector: 'events',
+  templateUrl: './events.component.html',
+  styleUrls: ['./events.component.scss'],
   animations: fuseAnimations,
 })
-export class OrganizerComponent implements OnInit {
+export class EventsComponent implements OnInit {
 
   isLoading: boolean = false;
   constants: any = CONSTANTS;
@@ -35,7 +35,7 @@ export class OrganizerComponent implements OnInit {
    * Constructor
    */
   constructor(
-    private _apiService: OrganizerService,
+    private _apiService: EventsService,
     private _globalFunctions: GlobalFunctions,
 
     private _changeDetectorRef: ChangeDetectorRef,
@@ -60,7 +60,9 @@ export class OrganizerComponent implements OnInit {
     this.isLoading = true;
     this._apiService.getList(this.filterObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
-        this.products = result.Data.docs;        
+        this.products = result.Data.docs;
+        console.log(result.Data.docs);
+        
         const pagination: any = this._globalFunctions.copyObject(result.Data);
         delete pagination.docs;
         this.pagination = pagination;
@@ -205,9 +207,8 @@ export class OrganizerComponent implements OnInit {
         const index = this.products.findIndex((item: any) => item.id === product._id);
         if (product._id != '' && index != -1) {
           this.products.splice(index, 1);
-          
           // Delete the product on the server
-          this._apiService.delete(product._id).subscribe((result: any) => {
+          this._apiService.delete(product._id).subscribe((result) => {
             if (result && result.IsSuccess) {
               this.pagination.totalDocs = this.pagination.totalDocs - 1;
             }

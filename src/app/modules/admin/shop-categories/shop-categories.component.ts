@@ -39,7 +39,7 @@ export class ShopCategoriesComponent implements OnInit {
    */
   constructor(
     private _formBuilder: FormBuilder,
-    private _shopCategoriesService: ShopCategoriesService,
+    private _apiService: ShopCategoriesService,
     private _globalFunctions: GlobalFunctions,
 
     private _changeDetectorRef: ChangeDetectorRef,
@@ -62,7 +62,7 @@ export class ShopCategoriesComponent implements OnInit {
 
   getEvent(): void {
     this.isLoading = true;
-    this._shopCategoriesService.getList(this.filterObj).subscribe((result: any) => {
+    this._apiService.getList(this.filterObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.products = result.Data.docs;
         const pagination: any = this._globalFunctions.copyObject(result.Data);
@@ -134,7 +134,7 @@ export class ShopCategoriesComponent implements OnInit {
     }
 
     const preparedItemsObj: any = this.prepareItemsObj(this.discountsForm.value, categoryid);
-    this._shopCategoriesService.createAndUpdate(preparedItemsObj).subscribe((result: any) => {
+    this._apiService.createAndUpdate(preparedItemsObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.showFlashMessage('success');
         const index = (categoryid == '') ? 0 : this.products.findIndex((item: any) => item._id === categoryid);        
@@ -176,7 +176,7 @@ export class ShopCategoriesComponent implements OnInit {
         if (product.categoryid != '' && index != -1) {
           this.products.splice(index, 1);
           // Delete the product on the server
-          this._shopCategoriesService.delete(product.categoryid).subscribe(() => {
+          this._apiService.delete(product.categoryid).subscribe(() => {
             // Close the details
             this.closeDetails();
           });
