@@ -7,9 +7,9 @@ import { appConfig } from 'app/core/config/app.config';
 import { NgModule } from '@angular/core';
 
 // @formatter:off
-// tslint:disable:max-line-length
-// const appRoutes: Route[] = [
-const routes: Routes = [
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+export const appRoutes: Route[] = [
 
     // Redirect empty path to '/example'
     {path: '', pathMatch : 'full', redirectTo: 'admin'},
@@ -83,9 +83,3 @@ const routes: Routes = [
         ]
     }
 ];
-
-@NgModule({
-    imports: [RouterModule.forRoot(routes, { useHash: true })],
-    exports: [RouterModule]
-})
-export class appRoutes { }

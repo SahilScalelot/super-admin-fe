@@ -255,7 +255,7 @@ export class SeatingItemsComponent implements OnInit {
   private _prepareItemsListForm(itemsListObj: any = {}): void {
     this.selectedItemsForm = this._formBuilder.group({
       itemid: [itemsListObj?._id || ''],
-      itemname: [itemsListObj?.itemname || '', [Validators.required]],
+      itemname: [itemsListObj?.itemname || '', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
       itemimage: [itemsListObj?.itemimage || '', [Validators.required]],
       description: [itemsListObj?.description || '', [Validators.required]],
       status: [itemsListObj?.status || false],
