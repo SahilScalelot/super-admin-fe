@@ -5,7 +5,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CONSTANTS } from 'app/layout/common/constants';
 import { GlobalFunctions } from 'app/layout/common/global-functions';
 import { EventCategoriesService } from './event-categories.service';
-import { Discounts } from './event-categories.types';
+import { InventoryProduct } from './event-categories.types';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 
@@ -22,8 +22,8 @@ export class EventCategoriesComponent implements OnInit {
 
   searchInputControl: FormControl = new FormControl();
 
-  products: Discounts[] = [];
-  selectedProduct: Discounts;
+  products: InventoryProduct[] = [];
+  selectedProduct: InventoryProduct;
   discountsForm: any;
 
   flashMessage: 'success' | 'error' | null = null;
@@ -189,13 +189,13 @@ export class EventCategoriesComponent implements OnInit {
   }
 
   newAddItems(): any {
-    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'categoryid': ''}) == 0);
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'_id': ''}) == 0);
     if (isFirstRecordEmpty) {
       return false;
     }
     // Generate a new product
-    const newProduct: Discounts = {
-      categoryid    : '',
+    const newProduct: InventoryProduct = {
+      _id    : '',
       categoryname  : '',
       description   : '',
       event_type    : '',
@@ -205,9 +205,9 @@ export class EventCategoriesComponent implements OnInit {
     this.toggleDetails(newProduct);
   }
 
-  prepareItemsObj(shopObj: any, categoryid: any): any {
+  prepareItemsObj(shopObj: any, itemsId: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
-    preparedShopObj.categoryid = categoryid;
+    preparedShopObj.categoryid = itemsId;
     return preparedShopObj;
   }
 

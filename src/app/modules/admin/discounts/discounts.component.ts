@@ -126,7 +126,6 @@ export class DiscountsComponent implements OnInit {
     // If the product is already selected...
     const tmpSelectedProduct: any = this._globalFunctions.copyObject(this.selectedProduct || {});
     if (tmpSelectedProduct && tmpSelectedProduct._id === item._id) {
-      // Close the details
       this.closeDetails();
       return;
     }
@@ -214,13 +213,13 @@ export class DiscountsComponent implements OnInit {
   }
 
   newAddItems(): any {
-    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'discountid': ''}) == 0);
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'_id': ''}) == 0);
     if (isFirstRecordEmpty) {
       return false;
     }
     // Generate a new product
     const newProduct: InventoryProduct = {
-      discountid    : '',
+      _id           : '',
       discountname  : '',
       discounttype  : '',
       description   : '',
@@ -232,9 +231,9 @@ export class DiscountsComponent implements OnInit {
     this.toggleDetails(newProduct);
   }
 
-  prepareItemsObj(shopObj: any, discountid: any): any {
+  prepareItemsObj(shopObj: any, itemsId: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
-    preparedShopObj.discountid = discountid;
+    preparedShopObj.discountid = itemsId;
     preparedShopObj.discounttype = 'discount_on_total_bill';
     return preparedShopObj;
   }

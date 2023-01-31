@@ -1,5 +1,5 @@
 export interface InventoryProduct {
-    subscriptionid  : string,
+    _id             : string,
     planname        : string,
     description     : string,
     userlimitation  : string,

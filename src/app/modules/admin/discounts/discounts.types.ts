@@ -1,5 +1,5 @@
 export interface InventoryProduct {
-    discountid   : string;
+    _id          : string;
     discountname : string;
     discounttype : string;
     description  : string;

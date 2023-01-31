@@ -26,6 +26,9 @@ import { EventsComponent } from './events/events.component';
 
 const routes: Route[] = [
   {
+    path: '',
+    redirectTo: 'items'
+  },{
     path: 'items',
     component: SeatingItemsComponent
   },{

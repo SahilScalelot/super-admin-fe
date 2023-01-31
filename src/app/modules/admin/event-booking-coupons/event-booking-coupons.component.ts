@@ -190,29 +190,29 @@ export class EventBookingCouponsComponent implements OnInit {
   }
 
   newAddItems(): any {
-    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'eventbookingcouponid': ''}) == 0);
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'_id': ''}) == 0);
     if (isFirstRecordEmpty) {
       return false;
     }
     // Generate a new product
     const newProduct: InventoryProduct = {
-      eventbookingcouponid : "",
-      code                 : "",
-      description          : "",
-      amount               : "",
-      percentage           : "",
-      limit                : "",
-      expiry_date          : "",
-      expiry_time          : "",
-      status               : false,
+      _id         : "",
+      code        : "",
+      description : "",
+      amount      : "",
+      percentage  : "",
+      limit       : "",
+      expiry_date : "",
+      expiry_time : "",
+      status      : false,
     };
     this.products.unshift(newProduct);
     this.toggleDetails(newProduct);
   }
 
-  prepareItemsObj(shopObj: any, eventbookingcouponid: any): any {
+  prepareItemsObj(shopObj: any, itemsId: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
-    preparedShopObj.eventbookingcouponid = eventbookingcouponid;
+    preparedShopObj.eventbookingcouponid = itemsId;
     preparedShopObj.expiry_date = moment(shopObj.expiry_date).format('YYYY-MM-DD');
     return preparedShopObj;
   }

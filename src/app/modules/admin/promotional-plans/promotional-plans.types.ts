@@ -1,5 +1,5 @@
 export interface Discounts {    
-    planid               : string;
+    _id                  : string;
     planname             : string;
     description          : string;
     notification_amount  : string;

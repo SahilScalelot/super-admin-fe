@@ -112,24 +112,52 @@
               <div class="flex flex-wrap p-8">
                 <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
                   <span class="w-1/3 font-semibold">Name</span>
-                  <span class="w-2/3"><b class="mr-2">:</b> {{(selectedProduct.name) ? selectedProduct.name : 'N/A'}}</span>
+                  <span class="w-2/3"><b class="-ml-2 mr-2">:</b> {{(selectedProduct.name) ? selectedProduct.name : 'N/A'}}</span>
                 </div>
                 <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
-                  <span class="w-1/3 font-semibold">Email</span>
-                  <span class="w-2/3"><b class="mr-2">:</b> {{(selectedProduct.email) ? selectedProduct.email : 'N/A'}}</span>
+                  <span class="w-1/3 font-semibold">event_type</span>
+                  <span class="w-2/3"><b class="-ml-2 mr-2">:</b> {{(selectedProduct.event_type) ? selectedProduct.event_type : 'N/A'}}</span>
                 </div>
+
+
+                <div class="flex items-start w-full px-4 mb-4">
+                  <span class="font-bold text-lg text-primary-600">Discounts</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Discounts Name</span>
+                  <span class="w-2/3"><b class="-ml-2 mr-2">:</b> {{(selectedProduct.discounts[0].discountname) ? selectedProduct.discounts[0].discountname : 'N/A'}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Discounts Name</span>
+                  <span class="w-2/3"><b class="-ml-2 mr-2">:</b> {{(selectedProduct.discounts[0].discounttype) ? selectedProduct.discounts[0].discounttype : 'N/A'}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Discounts Name</span>
+                  <span class="w-2/3"><b class="-ml-2 mr-2">:</b> {{(selectedProduct.discounts[0].description) ? selectedProduct.discounts[0].description : 'N/A'}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Discounts Name</span>
+                  <span class="w-2/3"><b class="-ml-2 mr-2">:</b> {{(selectedProduct.discounts[0].discount) ? selectedProduct.discounts[0].discount : 'N/A'}}</span>
+                </div>
+                <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
+                  <span class="w-1/3 font-semibold">Discounts Name</span>
+                  <span class="w-2/3"><b class="-ml-2 mr-2">:</b> {{(selectedProduct.discounts[0].tandc) ? selectedProduct.discounts[0].tandc : 'N/A'}}</span>
+                </div>
+
+
+
                 <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
                   <span class="w-1/3 font-semibold">Mobile</span>
-                  <span class="w-2/3"><b class="mr-2">:</b> {{((selectedProduct.country_code) ? selectedProduct.country_code : '') + ' ' + ((selectedProduct.mobile) ? selectedProduct.mobile : 'N/A')}}</span>
+                  <span class="w-2/3"><b class="-ml-2 mr-2">:</b> {{((selectedProduct.country_code) ? selectedProduct.country_code : '') + ' ' + ((selectedProduct.mobile) ? selectedProduct.mobile : 'N/A')}}</span>
                 </div>
                 <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
                   <span class="w-1/3 font-semibold">Refer Code</span>
-                  <span class="w-2/3"><b class="mr-2">:</b> {{(selectedProduct.refer_code) ? selectedProduct.refer_code : 'N/A'}}</span>
+                  <span class="w-2/3"><b class="-ml-2 mr-2">:</b> {{(selectedProduct.refer_code) ? selectedProduct.refer_code : 'N/A'}}</span>
                 </div>
                 <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
                   <span class="w-1/3 font-semibold">Mobile Verified</span>
                   <div class="w-2/3 flex items-center">
-                    <b class="mr-3">:</b> 
+                    <b class="-ml-2 mr-3">:</b> 
                     <ng-container class="pt-1" *ngIf="selectedProduct.mobileverified">
                       <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
                     </ng-container>
@@ -140,12 +168,12 @@
                 </div>
                 <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
                   <span class="w-1/3 font-semibold">My Refer Code</span>
-                  <span class="w-2/3"><b class="mr-2">:</b> {{(selectedProduct.my_refer_code) ? selectedProduct.my_refer_code : 'N/A'}}</span>
+                  <span class="w-2/3"><b class="-ml-2 mr-2">:</b> {{(selectedProduct.my_refer_code) ? selectedProduct.my_refer_code : 'N/A'}}</span>
                 </div>
                 <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
                   <span class="w-1/3 font-semibold">Status</span>
                   <div class="w-2/3 flex items-center">
-                    <b class="mr-3">:</b> 
+                    <b class="-ml-2 mr-3">:</b> 
                     <ng-container class="pt-1" *ngIf="selectedProduct.status">
                       <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
                     </ng-container>
@@ -157,7 +185,7 @@
                 <div class="flex items-start w-full md:w-1/2 px-4 mb-4">
                   <span class="w-1/3 font-semibold">Is Approved</span>
                   <div class="w-2/3 flex items-center">
-                    <b class="mr-3">:</b> 
+                    <b class="-ml-2 mr-3">:</b> 
                     <ng-container class="pt-1" *ngIf="selectedProduct.is_approved">
                       <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
                     </ng-container>

@@ -1,5 +1,5 @@
 export interface InventoryProduct {
-    platformid    : string;
+    _id           : string;
     name          : string;
     platformimage : string;
     description   : string;

@@ -108,7 +108,6 @@ export class SeatingItemsComponent implements OnInit {
     // If the product is already selected...
     const tmpSelectedProduct: any = this._globalFunctions.copyObject(this.selectedProduct || {});
     if (tmpSelectedProduct && tmpSelectedProduct._id === item._id) {
-      // Close the details
       this.closeDetails();
       return;
     }
@@ -233,14 +232,13 @@ export class SeatingItemsComponent implements OnInit {
     if (isFirstRecordEmpty) {
       return false;
     }
-    
     // Generate a new product
     const newProduct: InventoryProduct = {
-      _id: '',
-      itemname: '',
-      itemimage: '',
-      description: '',
-      status: false
+      _id          : '',
+      itemname     : '',
+      itemimage    : '',
+      description  : '',
+      status       : false
     };
     this.products.unshift(newProduct);
     this.toggleDetails(newProduct);
@@ -248,18 +246,18 @@ export class SeatingItemsComponent implements OnInit {
 
   prepareItemsObj(shopObj: any, itemsId: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
-    preparedShopObj.itemid = itemsId;
+    preparedShopObj.itemid    = itemsId;
     preparedShopObj.itemimage = this.selectedProduct.itemimage;
     return preparedShopObj;
   }
 
   private _prepareItemsListForm(itemsListObj: any = {}): void {
     this.selectedItemsForm = this._formBuilder.group({
-      itemid: [itemsListObj?._id || ''],
-      itemname: [itemsListObj?.itemname || '', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
-      itemimage: [itemsListObj?.itemimage || '', [Validators.required]],
-      description: [itemsListObj?.description || '', [Validators.required]],
-      status: [itemsListObj?.status || false],
+      itemid      : [itemsListObj?._id || ''],
+      itemname    : [itemsListObj?.itemname || '', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
+      itemimage   : [itemsListObj?.itemimage || '', [Validators.required]],
+      description : [itemsListObj?.description || '', [Validators.required]],
+      status      : [itemsListObj?.status || false],
     });
   }
 

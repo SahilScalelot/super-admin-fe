@@ -226,13 +226,13 @@ export class PlatformsComponent implements OnInit {
   }
 
   newAddItems(): any {
-    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'platformid': ''}) == 0);
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'_id': ''}) == 0);
     if (isFirstRecordEmpty) {
       return false;
     }    
     // Generate a new product
     const newProduct: InventoryProduct = {
-      platformid    : '',
+      _id    : '',
       name          : '',
       platformimage : '',
       description   : '',
@@ -242,9 +242,9 @@ export class PlatformsComponent implements OnInit {
     this.toggleDetails(newProduct);
   }
 
-  prepareItemsObj(shopObj: any, platformid: any): any {
+  prepareItemsObj(shopObj: any, itemsId: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
-    preparedShopObj.itemid = platformid;
+    preparedShopObj.platformid = itemsId;
     preparedShopObj.platformimage = this.selectedProduct.platformimage;
     return preparedShopObj;
   }

@@ -189,13 +189,13 @@ export class ShopCategoriesComponent implements OnInit {
   }
 
   newAddItems(): any {
-    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'categoryid': ''}) == 0);
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'_id': ''}) == 0);
     if (isFirstRecordEmpty) {
       return false;
     }
     // Generate a new product
     const newProduct: InventoryProduct = {
-      categoryid    : '',
+      _id           : '',
       categoryname  : '',
       description   : '',
       status        : false,
@@ -204,9 +204,9 @@ export class ShopCategoriesComponent implements OnInit {
     this.toggleDetails(newProduct);
   }
 
-  prepareItemsObj(shopObj: any, categoryid: any): any {
+  prepareItemsObj(shopObj: any, itemsId: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
-    preparedShopObj.categoryid = categoryid;
+    preparedShopObj.categoryid = itemsId;
     return preparedShopObj;
   }
 
@@ -214,7 +214,7 @@ export class ShopCategoriesComponent implements OnInit {
     this.discountsForm = this._formBuilder.group({
       categoryid    : [itemsListObj?._id || ''],
       categoryname  : [itemsListObj?.categoryname || '', [Validators.required]],
-      description  : [itemsListObj?.description || '', [Validators.required]],
+      description   : [itemsListObj?.description || '', [Validators.required]],
       status        : [itemsListObj?.status || false],
     });
   }

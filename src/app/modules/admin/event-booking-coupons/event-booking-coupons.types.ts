@@ -1,13 +1,13 @@
 export interface InventoryProduct {
-    eventbookingcouponid : string,
-    code                 : string,
-    description          : string,
-    amount               : string,
-    percentage           : string,
-    limit                : string,
-    expiry_date          : string,
-    expiry_time          : string,
-    status               : boolean;
+    _id          : string,
+    code         : string,
+    description  : string,
+    amount       : string,
+    percentage   : string,
+    limit        : string,
+    expiry_date  : string,
+    expiry_time  : string,
+    status       : boolean;
 }
 
 export interface InventoryPagination

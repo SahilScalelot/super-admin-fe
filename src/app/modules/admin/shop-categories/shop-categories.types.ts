@@ -1,5 +1,5 @@
 export interface InventoryProduct {
-    categoryid   : string;
+    _id          : string;
     categoryname : string;
     description  : string;
     status       : boolean;

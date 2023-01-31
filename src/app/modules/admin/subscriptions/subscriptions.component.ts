@@ -189,13 +189,13 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   newAddItems(): any {
-    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'subscriptionid': ''}) == 0);
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'_id': ''}) == 0);
     if (isFirstRecordEmpty) {
       return false;
     }
     // Generate a new product
     const newProduct: InventoryProduct = {
-      subscriptionid  : "",
+      _id             : "",
       planname        : "",
       description     : "",
       userlimitation  : "",
@@ -208,9 +208,9 @@ export class SubscriptionsComponent implements OnInit {
     this.toggleDetails(newProduct);
   }
 
-  prepareItemsObj(shopObj: any, subscriptionid: any): any {
+  prepareItemsObj(shopObj: any, itemsId: any): any {
     const preparedShopObj: any = this._globalFunctions.copyObject(shopObj);
-    preparedShopObj.subscriptionid = subscriptionid;
+    preparedShopObj.subscriptionid = itemsId;
     return preparedShopObj;
   }
 

@@ -1,5 +1,5 @@
-export interface Discounts {
-    categoryid   : string;
+export interface InventoryProduct {
+    _id          : string;
     categoryname : string;
     description  : string;
     event_type   : string;
