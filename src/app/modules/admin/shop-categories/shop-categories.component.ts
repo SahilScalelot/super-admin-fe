@@ -1,14 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CONSTANTS } from 'app/layout/common/constants';
 import { GlobalFunctions } from 'app/layout/common/global-functions';
-import { MediaService } from '../media.service';
 import { ShopCategoriesService } from './shop-categories.service';
-import { Discounts } from './shop-categories.types';
-
+import { InventoryProduct } from './shop-categories.types';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 
@@ -25,8 +22,8 @@ export class ShopCategoriesComponent implements OnInit {
 
   searchInputControl: FormControl = new FormControl();
 
-  products: Discounts[] = [];
-  selectedProduct: Discounts;
+  products: InventoryProduct[] = [];
+  selectedProduct: InventoryProduct;
   discountsForm: any;
 
   flashMessage: 'success' | 'error' | null = null;
@@ -102,7 +99,8 @@ export class ShopCategoriesComponent implements OnInit {
 
   toggleDetails(item: any = {}): void {
     // If the product is already selected...
-    if (this.selectedProduct && this.selectedProduct.categoryid === item.categoryid) {
+    const tmpSelectedProduct: any = this._globalFunctions.copyObject(this.selectedProduct || {});
+    if (tmpSelectedProduct && tmpSelectedProduct._id === item._id) {
       // Close the details
       this.closeDetails();
       return;
@@ -190,9 +188,13 @@ export class ShopCategoriesComponent implements OnInit {
     });
   }
 
-  newAddItems(): void {
+  newAddItems(): any {
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'categoryid': ''}) == 0);
+    if (isFirstRecordEmpty) {
+      return false;
+    }
     // Generate a new product
-    const newProduct: Discounts = {
+    const newProduct: InventoryProduct = {
       categoryid    : '',
       categoryname  : '',
       description   : '',

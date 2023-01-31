@@ -106,7 +106,8 @@ export class SeatingItemsComponent implements OnInit {
 
   toggleDetails(item: any = {}): void {
     // If the product is already selected...
-    if (this.selectedProduct && this.selectedProduct._id === item._id) {
+    const tmpSelectedProduct: any = this._globalFunctions.copyObject(this.selectedProduct || {});
+    if (tmpSelectedProduct && tmpSelectedProduct._id === item._id) {
       // Close the details
       this.closeDetails();
       return;

@@ -49,11 +49,11 @@
 
                 <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
                   <!-- Name -->
-                  <div class="truncate">{{product.discountname}}</div>
-                  <div class="truncate">{{product.discounttype}}</div>
-                  <div class="truncate">{{product.description}}</div>
-                  <div class="truncate">{{product.discount}}</div>
-                  <div class="truncate">{{product.tandc}}</div>
+                  <div class="truncate">{{(product.discountname) ? product.discountname : 'N/A'}}</div>
+                  <div class="truncate">{{(product.discounttype) ? product.discounttype : 'N/A'}}</div>
+                  <div class="truncate">{{(product.description) ? product.description : 'N/A'}}</div>
+                  <div class="truncate">{{(product.discount) ? product.discount : 'N/A'}}</div>
+                  <div class="truncate">{{(product.tandc) ? product.tandc : 'N/A'}}</div>
                   <!-- Active -->
                   <div class="hidden lg:block">
                     <ng-container *ngIf="product.status">
@@ -146,7 +146,7 @@
                   <div class="flex items-center mr-4" *ngIf="flashMessage">
                     <ng-container *ngIf="flashMessage === 'success'">
                       <mat-icon class="text-green-500" [svgIcon]="'heroicons_outline:check'"></mat-icon>
-                      <span class="ml-2">Product updated</span>
+                      <span class="ml-2">Discount updated</span>
                     </ng-container>
                     <ng-container *ngIf="flashMessage === 'error'">
                       <mat-icon class="text-red-500" [svgIcon]="'heroicons_outline:x'"></mat-icon>
@@ -165,7 +165,7 @@
       </ng-template>
 
       <ng-template #noProducts>
-        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no products!</div>
+        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no Discount!</div>
       </ng-template>
     </div>
   </div>

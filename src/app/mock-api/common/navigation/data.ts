@@ -26,12 +26,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'feather:users',
         link : '/admin/organizer'
-    // },{
-    //     id   : 'events',
-    //     title: 'Events',
-    //     type : 'basic',
-    //     icon : 'heroicons_outline:calendar',
-    //     link : '/admin/events'
+    },{
+        id   : 'events',
+        title: 'Events',
+        type : 'basic',
+        icon : 'heroicons_outline:calendar',
+        link : '/admin/events'
     },{
         id   : 'shopCategories',
         title: 'Shop Categories',

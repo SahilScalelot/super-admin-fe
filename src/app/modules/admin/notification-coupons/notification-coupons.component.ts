@@ -1,15 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CONSTANTS } from 'app/layout/common/constants';
 import { GlobalFunctions } from 'app/layout/common/global-functions';
-import { MediaService } from '../media.service';
 import { NotificationCouponsService } from './notification-coupons.service';
 import { InventoryProduct } from './notification-coupons.types';
 import * as moment from 'moment';
-
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 
@@ -103,7 +100,8 @@ export class NotificationCouponsComponent implements OnInit {
 
   toggleDetails(item: any = {}): void {
     // If the product is already selected...
-    if (this.selectedProduct && this.selectedProduct.notificationcouponid === item.notificationcouponid) {
+    const tmpSelectedProduct: any = this._globalFunctions.copyObject(this.selectedProduct || {});
+    if (tmpSelectedProduct && tmpSelectedProduct._id === item._id) {
       // Close the details
       this.closeDetails();
       return;
@@ -191,9 +189,14 @@ export class NotificationCouponsComponent implements OnInit {
     });
   }
 
-  newAddItems(): void {
+  newAddItems(): any {
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'notificationcouponid': ''}) == 0);
+    if (isFirstRecordEmpty) {
+      return false;
+    }
     // Generate a new product
-    const newProduct: InventoryProduct = {    "notificationcouponid" : "",
+    const newProduct: InventoryProduct = {
+      notificationcouponid : "",
       code                 : "",
       description          : "",
       amount               : "",

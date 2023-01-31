@@ -1,6 +1,5 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CONSTANTS } from 'app/layout/common/constants';
@@ -9,7 +8,6 @@ import { Observable } from 'rxjs';
 import { MediaService } from '../media.service';
 import { PlatformsService } from './platforms.service';
 import { InventoryProduct } from './platforms.types';
-
 import * as _ from 'lodash';
 
 @Component({
@@ -106,7 +104,8 @@ export class PlatformsComponent implements OnInit {
 
   toggleDetails(item: any = {}): void {
     // If the product is already selected...
-    if (this.selectedProduct && this.selectedProduct.platformid === item.platformid) {
+    const tmpSelectedProduct: any = this._globalFunctions.copyObject(this.selectedProduct || {});
+    if (tmpSelectedProduct && tmpSelectedProduct._id === item._id) {
       // Close the details
       this.closeDetails();
       return;
@@ -230,8 +229,7 @@ export class PlatformsComponent implements OnInit {
     const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'platformid': ''}) == 0);
     if (isFirstRecordEmpty) {
       return false;
-    }
-    
+    }    
     // Generate a new product
     const newProduct: InventoryProduct = {
       platformid    : '',

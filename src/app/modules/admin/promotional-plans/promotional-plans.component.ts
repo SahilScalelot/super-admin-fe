@@ -1,14 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CONSTANTS } from 'app/layout/common/constants';
 import { GlobalFunctions } from 'app/layout/common/global-functions';
-import { MediaService } from '../media.service';
 import { PromotionalPlansService } from './promotional-plans.service';
 import { Discounts } from './promotional-plans.types';
-
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 
@@ -102,7 +99,8 @@ export class PromotionalPlansComponent implements OnInit {
 
   toggleDetails(item: any = {}): void {
     // If the product is already selected...
-    if (this.selectedProduct && this.selectedProduct.planid === item.planid) {
+    const tmpSelectedProduct: any = this._globalFunctions.copyObject(this.selectedProduct || {});
+    if (tmpSelectedProduct && tmpSelectedProduct._id === item._id) {
       // Close the details
       this.closeDetails();
       return;
@@ -190,7 +188,11 @@ export class PromotionalPlansComponent implements OnInit {
     });
   }
 
-  newAddItems(): void {
+  newAddItems(): any {
+    const isFirstRecordEmpty: boolean = (_.findIndex(this.products, {'planid': ''}) == 0);
+    if (isFirstRecordEmpty) {
+      return false;
+    }
     // Generate a new product
     const newProduct: Discounts = {
       planid               : '',

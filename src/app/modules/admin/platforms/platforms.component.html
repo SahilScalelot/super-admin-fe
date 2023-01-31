@@ -60,12 +60,8 @@
                   </div>
 
                   <!-- Name -->
-                  <div class="truncate">
-                    {{product.name}}
-                  </div>
-                  <div class="truncate">
-                    {{product.description}}
-                  </div>
+                  <div class="truncate">{{(product.name) ? product.name : 'N/A'}}</div>
+                  <div class="truncate">{{(product.description) ? product.description : 'N/A'}}</div>
 
                   <!-- Active -->
                   <div class="hidden lg:block">
@@ -181,7 +177,7 @@
                   <div class="flex items-center mr-4" *ngIf="flashMessage">
                     <ng-container *ngIf="flashMessage === 'success'">
                       <mat-icon class="text-green-500" [svgIcon]="'heroicons_outline:check'"></mat-icon>
-                      <span class="ml-2">Item updated</span>
+                      <span class="ml-2">Platforms updated</span>
                     </ng-container>
                     <ng-container *ngIf="flashMessage === 'error'">
                       <mat-icon class="text-red-500" [svgIcon]="'heroicons_outline:x'"></mat-icon>
@@ -200,7 +196,7 @@
       </ng-template>
 
       <ng-template #noProducts>
-        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no products!</div>
+        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no Platforms!</div>
       </ng-template>
     </div>
   </div>

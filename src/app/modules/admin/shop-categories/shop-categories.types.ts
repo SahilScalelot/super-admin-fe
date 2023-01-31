@@ -1,4 +1,4 @@
-export interface Discounts {
+export interface InventoryProduct {
     categoryid   : string;
     categoryname : string;
     description  : string;

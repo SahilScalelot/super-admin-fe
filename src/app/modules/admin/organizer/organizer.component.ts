@@ -98,7 +98,8 @@ export class OrganizerComponent implements OnInit {
 
   toggleDetails(item: any = {}): void {    
     // If the product is already selected...
-    if (this.selectedProduct && this.selectedProduct.organizerid === item.organizerid) {
+    const tmpSelectedProduct: any = this._globalFunctions.copyObject(this.selectedProduct || {});
+    if (tmpSelectedProduct && tmpSelectedProduct._id === item._id) {
       // Close the details
       this.closeDetails();
       return;
