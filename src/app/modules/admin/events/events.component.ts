@@ -61,8 +61,6 @@ export class EventsComponent implements OnInit {
     this._apiService.getList(this.filterObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.products = result.Data.docs;
-        console.log(result.Data.docs);
-        
         const pagination: any = this._globalFunctions.copyObject(result.Data);
         delete pagination.docs;
         this.pagination = pagination;
@@ -108,6 +106,7 @@ export class EventsComponent implements OnInit {
     }
     // this._prepareItemsListForm(item);
     this.selectedProduct = item;
+    console.log(this.selectedProduct);    
   }
 
   showFlashMessage(type: 'success' | 'error'): void {
@@ -142,14 +141,8 @@ export class EventsComponent implements OnInit {
         const product = organizerObj;
         const index = this.products.findIndex((item: any) => item.id === product._id);
         if (product._id != '' && index != -1) {
-          this.products.splice(index, 1);
-          // Delete the product on the server
           this._apiService.approve(product._id).subscribe(() => {
-            // Close the details
-            this.closeDetails();
           });
-        } else if (product._id == '') {
-          this.products.splice(0, 1);
         }
         this.closeDetails();
       } else {
@@ -176,7 +169,6 @@ export class EventsComponent implements OnInit {
         // Get the product object
         const product = organizerObj;
         const index = this.products.findIndex((item: any) => item._id === product._id);
-        
         if (product._id != '' && index != -1) {
           this._apiService.disapprove(product._id).subscribe((result: any) => {
           });
