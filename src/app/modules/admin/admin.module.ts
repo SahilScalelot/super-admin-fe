@@ -23,42 +23,43 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { EventBookingCouponsComponent } from './event-booking-coupons/event-booking-coupons.component';
 import { OrganizerComponent } from './organizer/organizer.component';
 import { EventsComponent } from './events/events.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const routes: Route[] = [
   {
     path: '',
     redirectTo: 'items'
-  },{
+  }, {
     path: 'items',
     component: SeatingItemsComponent
-  },{
+  }, {
     path: 'discounts',
     component: DiscountsComponent
-  },{
+  }, {
     path: 'event-categories',
     component: EventCategoriesComponent
-  },{
+  }, {
     path: 'shop-categories',
     component: ShopCategoriesComponent
-  },{
+  }, {
     path: 'promotion-plans',
     component: PromotionalPlansComponent
-  },{
+  }, {
     path: 'platforms',
     component: PlatformsComponent
-  },{
+  }, {
     path: 'subscription-plans',
     component: SubscriptionsComponent
-  },{
+  }, {
     path: 'notification-coupons',
     component: NotificationCouponsComponent
-  },{
+  }, {
     path: 'event-booking-coupons',
     component: EventBookingCouponsComponent
-  },{
+  }, {
     path: 'organizer',
     component: OrganizerComponent
-  },{
+  }, {
     path: 'events',
     component: EventsComponent
   }
@@ -92,7 +93,8 @@ const routes: Route[] = [
     MatSortModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatExpansionModule
   ]
 })
 export class AdminModule { }

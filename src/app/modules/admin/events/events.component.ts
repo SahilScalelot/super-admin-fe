@@ -106,7 +106,6 @@ export class EventsComponent implements OnInit {
     }
     // this._prepareItemsListForm(item);
     this.selectedProduct = item;
-    console.log(this.selectedProduct);    
   }
 
   showFlashMessage(type: 'success' | 'error'): void {
