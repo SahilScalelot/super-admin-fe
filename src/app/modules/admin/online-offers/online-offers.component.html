@@ -1,0 +1,280 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
+
+  <!-- Header -->
+  <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+    <!-- Loader -->
+    <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+      <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+    </div>
+    <!-- Title -->
+    <div class="text-4xl font-extrabold tracking-tight">Online Offers</div>
+    <!-- Actions -->
+    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+      <!-- Search -->
+      <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded min-w-64">
+        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
+        <input matInput [autocomplete]="'off'" [placeholder]="'Search products'" (keyup)="search($event)">
+        <!-- [formControl]="searchInputControl" -->
+      </mat-form-field>
+      <!-- Add product button -->
+      <!-- <button class="ml-4" mat-flat-button [color]="'primary'" (click)="newAddItems()">
+        <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+        <span class="ml-2 mr-1">Add</span>
+      </button> -->
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="flex flex-auto overflow-hidden">
+    <!-- Products list -->
+    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+      <ng-container>
+        <ng-container *ngIf="products && products.length > 0; else noProducts">
+          <div class="grid">
+            <!-- Header -->
+            <div
+              class="inventory-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
+              matSort matSortDisableClear (matSortChange)="sortField($event)">
+              <div [mat-sort-header]="'product_name'">Product Name</div>
+              <div class="hidden lg:block" [mat-sort-header]="'shop_name'">Shop Name</div>
+              <div class="hidden lg:block" [mat-sort-header]="'createdBy.name'">Organizers</div>
+              <!-- <div class="hidden lg:block" [mat-sort-header]="'is_live'">Is Live</div> -->
+              <div class="hidden lg:block" [mat-sort-header]="'is_approved'">Is Approved</div>
+              <div class="hidden lg:block" [mat-sort-header]="'status'">Status</div>
+              <div class="hidden sm:block" [mat-sort-header]="'_id'">Details</div>
+            </div>
+            <!-- Rows -->
+            <ng-container>
+              <ng-container *ngFor="let product of products;">
+
+                <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
+                  <!-- Name -->
+                  <div class="truncate">{{(product.product_name) ? product.product_name : 'N/A'}}</div>
+                  <div class="truncate">{{(product.shop_name) ? product.shop_name : 'N/A'}}</div>
+                  <div class="truncate">{{(product.createdBy.name) ? product.createdBy.name : 'N/A'}}</div>
+                  <!-- Active -->
+                  <!-- <div class="hidden lg:block">
+                    <ng-container *ngIf="product.is_live">
+                      <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                    </ng-container>
+                    <ng-container *ngIf="!product.is_live">
+                      <mat-icon class="text-gray-400 icon-size-5" [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                    </ng-container>
+                  </div> -->
+                  <!-- Active -->
+                  <div class="hidden lg:block">
+                    <ng-container *ngIf="product.is_approved">
+                      <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                    </ng-container>
+                    <ng-container *ngIf="!product.is_approved">
+                      <mat-icon class="text-gray-400 icon-size-5" [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                    </ng-container>
+                  </div>
+                  <!-- Active -->
+                  <div class="hidden lg:block">
+                    <ng-container *ngIf="product.status">
+                      <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                    </ng-container>
+                    <ng-container *ngIf="!product.status">
+                      <mat-icon class="text-gray-400 icon-size-5" [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                    </ng-container>
+                  </div>
+                  <!-- Details button -->
+                  <div><button class="min-w-10 min-h-7 h-7 px-2 leading-6" mat-stroked-button (click)="toggleDetails(product, true)"> <mat-icon class="icon-size-5" [svgIcon]="selectedProduct?.id === product.id ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon></button></div>
+                </div>
+
+                <div class="grid">
+                  <ng-container *ngIf="selectedProduct?._id === product._id">
+                    <ng-container *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: product}"></ng-container>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+
+          <mat-paginator
+            class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+            (page)="paginate($event)"
+            [ngClass]="{'pointer-events-none': isLoading}" 
+            [length]="pagination?.totalDocs || 0" 
+            [pageIndex]="pagination?.page - 1 || 0"
+            [pageSize]="pagination?.limit || 10" 
+            [pageSizeOptions]="[10, 20, 30, 50]" 
+            [showFirstLastButtons]="true"></mat-paginator>
+        </ng-container>
+      </ng-container>
+
+      <ng-template #rowDetailsTemplate let-product>
+        <div class="shadow-lg overflow-hidden">
+          <div class="flex border-b">
+            <!-- Selected product form -->
+            <div class="flex flex-col w-full bg-default">
+                
+              <div class="w-full mb-4">
+                <div class="relative h-50 overflow-hidden -z-10" *ngIf="!!(selectedProduct?.poster)">
+                  <img [src]="constants?.baseImageURL + selectedProduct?.poster" alt="dashboard-bg" class="absolute inset-0 w-full object-cover" />
+                </div>
+
+                <div class="max-w-screen-xl mx-auto px-3.5 md:px-5 min-h-full relative -mt-5">
+                  <div class="lg:flex items-end justify-between bg-white py-5 px-7 rounded-md">
+                    <div>
+                      
+                      <div class="flex items-center pb-3">
+                        <h2 class="font-bold">{{selectedProduct?.shop_name}}</h2>
+                      </div>
+                      <div class="w-full flex flex-wrap">
+                        <div class="pr-2.5 lg:pr-5">
+                          <div class="text-sm font-semibold text-quicksilver flex items-center">
+                            <mat-icon svgIcon="heroicons_outline:calendar" class="icon-size-4 mr-1"></mat-icon> Offer Date
+                          </div>
+                          <span class="text-japaneseIndigo text-sm font-bold">{{selectedProduct?.start_date | date:'dd MMM, yyyy'}} - {{selectedProduct?.end_date | date:'dd MMM, yyyy'}}</span>
+                        </div>
+                        <div class="border-l-2 border-brightGray px-2 lg:px-4">
+                          <div class="text-sm font-semibold text-quicksilver">Offer Status</div>
+                          <div class="flex items-center">
+                            <span class="off text-base font-bold anim order-1 text-caribbeanGreen" *ngIf="selectedProduct?.status">On</span>
+                            <span class="on text-base font-bold anim order-3" *ngIf="!selectedProduct?.status">Off</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pt-3.5 lg:pt-7">
+                    <div class="relative tab-main active" id="overview">
+                      <div class="flex flex-wrap">
+                        <div class="w-full lg:w-8/12 lg:pr-3 xl:pr-5 space-y-7">
+                          <div class="bg-white p-7 space-y-5 rounded-md">
+                            <div class="space-y-2.5">
+                              <p class="text-lg text-japaneseIndigo font-bold">Product Image</p>
+                              <div class="flex space-x-5 items-center">
+                                <span *ngFor="let prod_imgs of selectedProduct?.images; let i = index" class="block w-40 h-40">
+                                  <img [src]="!!(prod_imgs?.url) ? constants.baseImageURL + prod_imgs.url : constants.defaultImage"
+                                  [alt]="'product-'+i" alt="" class="w-full h-full object-cover rounded" />
+                                </span>
+                              </div>
+                            </div>
+                            <div class="space-y-2.5">
+                              <p class="text-lg text-japaneseIndigo font-bold">Product Name</p>
+                              <span class="text-sm text-quicksilver">{{selectedProduct?.product_name}}</span>
+                            </div>
+                            <div class="space-y-2.5">
+                              <p class="text-lg text-japaneseIndigo font-bold">Product Description</p>
+                              <div [innerHtml]="selectedProduct?.description"></div>
+                              <!-- <span class="text-sm text-quicksilver">{{selectedProduct?.description}}</span> -->
+                            </div>
+                          </div>
+                          <div class="space-y-3">
+                            <h5 class="font-bold">Platform & Product Link</h5>
+                            <div class="bg-white space-y-2.5 rounded-md">
+                              <div class="flex items-center justify-between bg-brightGray py-3 px-4 rounded-md" *ngFor="let platform of selectedProduct?.product_links; let i = index">
+                                <div class="flex items-center space-x-2.5 w-full max-w-[calc(100%-148px)]">
+                                  <img [src]="!!(platform?.platform?.platformimage) ? constants.baseImageURL + platform.platform.platformimage : constants.defaultImage" [alt]="platform.platform.name" class="w-7 h-7 object-contain" />
+                                  <!-- <input type="text" class="w-full outline-none bg-transparent" [value]="platform.product_link" readonly /> -->
+                                  <div class="w-full block">
+                                    <a [href]="platform.product_link" target="_blank" class="w-full block text-sm normal-case whitespace-nowrap overflow-hidden overflow-ellipsis">{{platform?.product_link}}</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="space-y-4" *ngIf="selectedProduct?.company_name || selectedProduct?.about_company">
+                            <h5 class="font-bold">Company Name</h5>
+                            <div class="p-7 bg-white rounded-md space-y-1">
+                              <h3 class="text-lg font-bold">{{selectedProduct?.company_name}}</h3>
+                              <div [innerHtml]="selectedProduct?.about_company"></div>
+                              <!-- <p class="text-quicksilver text-sm font-normal">{{selectedProduct?.about_company}}</p> -->
+                            </div>
+                          </div>
+                          <div class="space-y-4" *ngIf="selectedProduct?.tandc" id="tAndC">
+                            <h5 class="font-bold">Terms & Conditions</h5>
+                            <div class="p-3 lg:p-7 bg-white rounded-md space-y-1" [innerHtml]="selectedProduct?.tandc?.t_and_c"></div>
+                          </div>
+                          <!-- Social-Media -->
+                          <div class="w-full space-y-3" *ngIf="selectedProduct?.tandc?.facebook && selectedProduct?.tandc?.facebook != '' ||
+                                selectedProduct?.tandc?.twitter && selectedProduct?.tandc?.twitter != '' ||
+                                selectedProduct?.tandc?.youtube && selectedProduct?.tandc?.youtube != '' ||
+                                selectedProduct?.tandc?.pinterest && selectedProduct?.tandc?.pinterest != '' ||
+                                selectedProduct?.tandc?.instagram && selectedProduct?.tandc?.instagram != '' ||
+                                selectedProduct?.tandc?.linkedin && selectedProduct?.tandc?.linkedin != ''">
+                            <span class="block text-base lg:text-xl font-bold">Social Media</span>
+                            <div class="flex items-center space-x-5 p-5 lg:p-7 bg-white rounded-lg">
+                              <a *ngIf="selectedProduct?.tandc?.facebook != ''" [href]="selectedProduct?.tandc?.facebook" target="_blank">
+                                <img class="w-10 h-10 object-cover" alt="facebook" src="../assets/images/facebook.png" />
+                              </a>
+                              <a *ngIf="selectedProduct?.tandc?.twitter != ''" [href]="selectedProduct?.tandc?.twitter" target="_blank">
+                                <img class="w-10 h-10 object-cover" alt="twiiter" src="../assets/images/twiiter.png" />
+                              </a>
+                              <a *ngIf="selectedProduct?.tandc?.youtube != ''" [href]="selectedProduct?.tandc?.youtube" target="_blank">
+                                <img class="w-10 h-10 object-cover" alt="youtube" src="../assets/images/youtube.png" />
+                              </a>
+                              <a *ngIf="selectedProduct?.tandc?.pinterest != ''" [href]="selectedProduct?.tandc?.pinterest" target="_blank">
+                                <img class="w-10 h-10 object-cover" alt="pinterest" src="../assets/images/pinterest.png" />
+                              </a>
+                              <a *ngIf="selectedProduct?.tandc?.instagram != ''" [href]="selectedProduct?.tandc?.instagram" target="_blank">
+                                <img class="w-10 h-10 object-cover" alt="instagram" src="../assets/images/instagram.png" />
+                              </a>
+                              <a *ngIf="selectedProduct?.tandc?.linkedin != ''" [href]="selectedProduct?.tandc?.linkedin" target="_blank">
+                                <img class="w-10 h-10 object-cover" alt="linkdin" src="../assets/images/linked.png" />
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="w-full lg:w-4/12 lg:pl-3 xl:pl-5 space-y-7 sticky top-0 mt-7 lg:mt-0">
+                          <div class="border bg-white p-3.5 xl:p-5 rounded-lg relative">
+                            <div class="flex flex-wrap w-full mb-3">
+                              <span class="w-full font-semibold pb-1">Discount Name</span>
+                              <span class="w-full text-secondary">{{(selectedProduct?.shop_name) ? selectedProduct?.shop_name : 'N/A'}}</span>
+                            </div>
+                            <div class="flex flex-wrap w-full">
+                              <span class="w-full font-semibold pb-1">Discount</span>
+                              <span class="w-full text-secondary">{{selectedProduct?.offer_amount}}{{(selectedProduct?.offer_type == 'percentage') ? '%' : '₹'}} Discount </span>
+                            </div>
+                          </div>
+                          <div class="bg-white p-7 rounded-md space-y-7">
+                            <p class="text-lg text-japaneseIndigo font-bold">user click on platform</p>
+                            <div class="flex items-center space-x-2.5 cursor-pointer" *ngFor="let click of selectedProduct?.product_links;let i = index;">
+                              <img [src]="!!(click?.platform?.platformimage) ? constants.baseImageURL + click.platform.platformimage : constants.defaultImage" [alt]="click?.platform?.name" class="w-10 h-10" />
+                              <div class="flex flex-col justify-center">
+                                <p class="text-base text-japaneseIndigo font-bold mb-0">{{click?.platform?.name}}</p>
+                                <span class="text-xs text-quicksilver">{{click?.short_link_id?.clicks}} User Click</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+              
+              <div class="flex items-center justify-between w-full border-t px-8 py-4">
+                <button class="-ml-4" mat-button [color]="'warn'" (click)="deleteSelectedProduct(selectedProduct)"> Delete </button>
+                <div class="flex items-center">
+                  <div class="flex items-center mr-4" *ngIf="flashMessage">
+                    <ng-container *ngIf="flashMessage === 'success'">
+                      <mat-icon class="text-green-500" [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                      <span class="ml-2">{{selectedProduct?.name}} is approve</span>
+                    </ng-container>
+                    <ng-container *ngIf="flashMessage === 'error'">
+                      <mat-icon class="text-red-500" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                      <span class="ml-2">An error occurred, try again!</span>
+                    </ng-container>
+                  </div>
+                  <button mat-flat-button [color]="'primary'" class="ml-4" (click)="approve(selectedProduct)" *ngIf="!selectedProduct.is_approved">Approve</button>
+                  <button mat-flat-button [color]="'accent'" class="ml-4" (click)="disapprove(selectedProduct)" *ngIf="selectedProduct.is_approved">Disapprove</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #noProducts>
+        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no Offers!</div>
+      </ng-template>
+    </div>
+  </div>
+</div>

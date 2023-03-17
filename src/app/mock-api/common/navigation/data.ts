@@ -33,6 +33,24 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon : 'heroicons_outline:calendar',
         link : '/admin/events'
     },{
+        id   : 'offlineShops',
+        title: 'Offline Shops',
+        type : 'basic',
+        icon : 'heroicons_outline:shopping-bag',
+        link : '/admin/offline-shops'
+    },{
+        id   : 'offlineOffer',
+        title: 'Shops Offers',
+        type : 'basic',
+        icon : 'feather:tag',
+        link : '/admin/offline-offer'
+    },{
+        id   : 'onlineOffer',
+        title: 'Online Offer',
+        type : 'basic',
+        icon : 'heroicons_outline:badge-check',
+        link : '/admin/online-offer'
+    },{
         id   : 'shopCategories',
         title: 'Shop Categories',
         type : 'basic',

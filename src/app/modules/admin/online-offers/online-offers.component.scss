@@ -1,0 +1,20 @@
+.inventory-grid {
+  grid-template-columns: 48px auto 40px;
+
+  @screen sm {
+    grid-template-columns: auto 140px 150px 100px 100px 80px;
+  }
+
+  @screen md {
+    grid-template-columns: auto 140px 150px 100px 100px 80px;
+  }
+
+  @screen lg {
+    grid-template-columns: auto 140px 150px 100px 100px 80px;
+  }
+}
+::ng-deep {
+  .max-w-\[calc\(100\%-148px\)\] {
+    max-width: calc(100% - 148px);
+  }
+}

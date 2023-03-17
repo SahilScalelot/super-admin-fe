@@ -24,6 +24,9 @@ import { EventBookingCouponsComponent } from './event-booking-coupons/event-book
 import { OrganizerComponent } from './organizer/organizer.component';
 import { EventsComponent } from './events/events.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { OfflineOffersComponent } from './offline-offers/offline-offers.component';
+import { OnlineOffersComponent } from './online-offers/online-offers.component';
+import { OfflineShopsComponent } from './offline-shops/offline-shops.component';
 
 const routes: Route[] = [
   {
@@ -62,6 +65,15 @@ const routes: Route[] = [
   }, {
     path: 'events',
     component: EventsComponent
+  }, {
+    path: 'offline-shops',
+    component: OfflineShopsComponent
+  }, {
+    path: 'offline-offer',
+    component: OfflineOffersComponent
+  }, {
+    path: 'online-offer',
+    component: OnlineOffersComponent
   }
 ];
 
@@ -77,7 +89,10 @@ const routes: Route[] = [
     NotificationCouponsComponent,
     EventBookingCouponsComponent,
     OrganizerComponent,
-    EventsComponent
+    EventsComponent,
+    OfflineOffersComponent,
+    OnlineOffersComponent,
+    OfflineShopsComponent
   ],
   imports: [
     RouterModule.forChild(routes),
