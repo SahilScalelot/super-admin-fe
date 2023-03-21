@@ -300,31 +300,34 @@
                         </div>
 
                         <div class="w-full lg:w-4/12 lg:pl-3 xl:pl-5 space-y-7 sticky top-0 mt-7 lg:mt-0">
-                          <div class="border bg-white p-3.5 xl:p-5 rounded-lg relative">
-                            <div class="flex flex-wrap w-full mb-3">
-                              <span class="w-full font-semibold pb-1">Discount Name</span>
-                              <span class="w-full text-secondary">{{(selectedProduct?.shop_name) ?
-                                selectedProduct?.shop_name : 'N/A'}}</span>
-                            </div>
-                            <div class="flex flex-wrap w-full">
-                              <span class="w-full font-semibold pb-1">Discount</span>
-                              <span
-                                class="w-full text-secondary">{{selectedProduct?.offer_amount}}{{(selectedProduct?.offer_type
-                                == 'percentage') ? '%' : '₹'}} Discount </span>
+                          <!-- map-content  -->
+                          <div class="w-full p-2.5 bg-white rounded-md">
+                            <div class="p-3.5 xl:p-5">
+                              <span class="input-titel"><mat-icon class="icon-size-3 mr-1" svgIcon="heroicons_outline:location-marker"></mat-icon> Location</span>
+                              <h3 class="text-sm xl:text-base">{{selectedProduct?.flat_no}} {{(selectedProduct?.street_name) ? (selectedProduct?.street_name + ',') : ''}} {{(selectedProduct?.area_name) ? (selectedProduct?.area_name + ',') : ''}} {{selectedProduct?.city}}, {{selectedProduct?.state}}, {{selectedProduct?.pincode}}.</h3>
                             </div>
                           </div>
-                          <div class="bg-white p-7 rounded-md space-y-7">
-                            <p class="text-lg text-japaneseIndigo font-bold">user click on platform</p>
-                            <div class="flex items-center space-x-2.5 cursor-pointer"
-                              *ngFor="let click of selectedProduct?.product_links;let i = index;">
-                              <img
-                                [src]="!!(click?.platform?.platformimage) ? constants.baseImageURL + click.platform.platformimage : constants.defaultImage"
-                                [alt]="click?.platform?.name" class="w-10 h-10" />
-                              <div class="flex flex-col justify-center">
-                                <p class="text-base text-japaneseIndigo font-bold mb-0">{{click?.platform?.name}}</p>
-                                <span class="text-xs text-quicksilver">{{click?.short_link_id?.clicks}} User
-                                  Click</span>
+                          <!-- Calender  -->
+                          <div class="rounded-md bg-white p-4 xl:p-8 space-y-4">
+                            <div>
+                              <span class="text-quicksilver text-xs font-bold flex items-center pb-2">
+                                <svg class="mr-2" width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M9.71042 2.79902H8.56226L5.80545 0.45295C5.82089 0.414861 5.83015 0.372997 5.83015 0.329418C5.83015 0.147895 5.68226 0 5.50073 0C5.31852 0 5.17097 0.147895 5.17097 0.329418C5.17097 0.372997 5.18024 0.414861 5.19568 0.45295L2.43886 2.79902H1.29036C0.798978 2.79902 0.399902 3.19844 0.399902 3.68948V12.1095C0.399902 12.6013 0.798978 13 1.29036 13H8.70432L10.5998 11.1041V3.68948C10.6005 3.19844 10.2011 2.79902 9.71042 2.79902ZM8.83986 3.93929C8.83986 4.20385 8.62506 4.41832 8.36084 4.41832C8.09662 4.41832 7.88181 4.20385 7.88181 3.93929C7.88181 3.67473 8.09627 3.46026 8.36084 3.46026C8.6254 3.46026 8.83986 3.67507 8.83986 3.93929ZM5.33397 0.606335C5.38338 0.636532 5.43828 0.659179 5.50073 0.659179C5.56319 0.659179 5.61774 0.636875 5.66819 0.606678L8.24451 2.79937H2.75661L5.33397 0.606335ZM7.40964 3.93929C7.40964 4.20385 7.19518 4.41832 6.92993 4.41832C6.66571 4.41832 6.45158 4.20385 6.45158 3.93929C6.45158 3.67473 6.66571 3.46026 6.92993 3.46026C7.19518 3.46026 7.40964 3.67507 7.40964 3.93929ZM5.97942 3.93929C5.97942 4.20385 5.76461 4.41832 5.50039 4.41832C5.23583 4.41832 5.02136 4.20385 5.02136 3.93929C5.02136 3.67473 5.23617 3.46026 5.50039 3.46026C5.76461 3.46026 5.97942 3.67507 5.97942 3.93929ZM4.54885 3.93929C4.54885 4.20385 4.33507 4.41832 4.07085 4.41832C3.80526 4.41832 3.5908 4.20385 3.5908 3.93929C3.5908 3.67473 3.80526 3.46026 4.07085 3.46026C4.33507 3.46026 4.54885 3.67507 4.54885 3.93929ZM2.63994 3.46026C2.90451 3.46026 3.11897 3.67507 3.11897 3.93929C3.11897 4.20351 2.90451 4.41832 2.63994 4.41832C2.37538 4.41832 2.16092 4.20385 2.16092 3.93929C2.16092 3.67473 2.37572 3.46026 2.63994 3.46026Z" fill="#9BA0A8"/>
+                                  <path d="M2.10504 9.61733C2.16337 9.7292 2.24744 9.81704 2.35725 9.87984C2.46705 9.94263 2.61461 9.97386 2.7999 9.97386C2.9852 9.97386 3.13275 9.94229 3.24256 9.87984C3.35237 9.81636 3.43644 9.72954 3.49477 9.61733C3.5531 9.50478 3.59085 9.37061 3.60801 9.2138C3.62516 9.05698 3.63374 8.88609 3.63374 8.70114C3.63374 8.5155 3.62516 8.34461 3.60801 8.1878C3.59085 8.03098 3.5531 7.89681 3.49477 7.78495C3.43644 7.67308 3.35237 7.58524 3.24256 7.5221C3.13275 7.45896 2.9852 7.42773 2.7999 7.42773C2.61461 7.42773 2.46705 7.4593 2.35725 7.5221C2.24744 7.58524 2.16337 7.6724 2.10504 7.78495C2.0467 7.89681 2.00896 8.03167 1.9918 8.1878C1.97464 8.34461 1.96606 8.5155 1.96606 8.70114C1.96606 8.88609 1.97464 9.05698 1.9918 9.2138C2.0093 9.37096 2.0467 9.50547 2.10504 9.61733ZM2.4722 8.28251C2.48009 8.16858 2.49622 8.0749 2.52024 8.00113C2.54426 7.92804 2.57858 7.87451 2.62318 7.84157C2.66779 7.80862 2.72647 7.79181 2.7999 7.79181C2.87334 7.79181 2.93201 7.80862 2.97662 7.84157C3.02123 7.87519 3.05555 7.92804 3.07957 8.00113C3.10359 8.07422 3.11937 8.16858 3.12761 8.28251C3.1355 8.39712 3.13962 8.53643 3.13962 8.70148C3.13962 8.86585 3.1355 9.00619 3.12761 9.12183C3.11971 9.23747 3.10359 9.33081 3.07957 9.40321C3.05555 9.47493 3.02123 9.52777 2.97662 9.56072C2.93201 9.59434 2.87299 9.61081 2.7999 9.61081C2.72681 9.61081 2.66779 9.59434 2.62318 9.56072C2.57858 9.52777 2.54426 9.47493 2.52024 9.40321C2.49622 9.33081 2.48009 9.23747 2.4722 9.12183C2.46431 9.00654 2.46019 8.86619 2.46019 8.70148C2.46019 8.53643 2.46431 8.39712 2.4722 8.28251Z" fill="white"/>
+                                  <path d="M4.41942 8.94899H4.68364C4.80031 8.94899 4.90668 8.93389 5.00276 8.90438C5.09884 8.87487 5.18051 8.82992 5.24811 8.77021C5.31571 8.71085 5.36821 8.63467 5.40596 8.54237C5.4437 8.44937 5.46258 8.33923 5.46258 8.21089C5.46258 8.11927 5.45125 8.02971 5.42826 7.94187C5.40561 7.85368 5.36753 7.7751 5.31502 7.70647C5.26252 7.63784 5.19321 7.58259 5.10742 7.54039C5.02164 7.49818 4.91595 7.47656 4.79001 7.47656H3.92529V9.92661H4.41942V8.94899ZM4.41942 7.84098H4.62531C4.74884 7.84098 4.83703 7.87324 4.88953 7.93672C4.94203 8.00054 4.96845 8.09456 4.96845 8.2181C4.96845 8.34403 4.93825 8.43668 4.87752 8.49604C4.81678 8.55541 4.73751 8.5856 4.63903 8.5856H4.41942V7.84098Z" fill="white"/>
+                                  <path d="M7.10976 9.5217H6.20077V8.86286H7.02397V8.4583H6.20077V7.88147H7.07544V7.47656H5.7063V9.92661H7.10976V9.5217Z" fill="white"/>
+                                  <path d="M7.80964 8.21089H7.8165L8.42043 9.92661H8.98319V7.47656H8.53024V9.15454H8.52338L7.92631 7.47656H7.35669V9.92661H7.80964V8.21089Z" fill="white"/>
+                                </svg>
+                                Open Day</span>
+                              <div class="weekDays-selector-box flex justify-start space-x-3">
+                                <div class="flex flex-col items-center" *ngFor="let day of selectedProduct?.shop_days">
+                                  <span class="block text-base font-bold text-quicksilver">{{day}}</span>
+                                </div>
                               </div>
+                            </div>
+                            <div *ngIf="selectedProduct?.shop_open_time">
+                              <span class="text-quicksilver text-xs font-bold"><mat-icon class="icon-size-3 mr-1" svgIcon="heroicons_outline:clock"></mat-icon> Shop Open Time</span>
+                              <p class="text-sm font-bold text-japaneseIndigo">{{"0" + " " + selectedProduct?.shop_open_time | date:'shortTime'}} - {{"0" + " " + selectedProduct?.shop_close_time | date:'shortTime'}}</p>
                             </div>
                           </div>
                         </div>
@@ -363,7 +366,7 @@
       </ng-template>
 
       <ng-template #noProducts>
-        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no Offers!</div>
+        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no Shops!</div>
       </ng-template>
     </div>
   </div>
