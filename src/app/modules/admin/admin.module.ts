@@ -27,6 +27,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { OfflineOffersComponent } from './offline-offers/offline-offers.component';
 import { OnlineOffersComponent } from './online-offers/online-offers.component';
 import { OfflineShopsComponent } from './offline-shops/offline-shops.component';
+import { AgentComponent } from './agent/agent.component';
 
 const routes: Route[] = [
   {
@@ -63,6 +64,9 @@ const routes: Route[] = [
     path: 'organizer',
     component: OrganizerComponent
   }, {
+    path: 'agents',
+    component: AgentComponent
+  }, {
     path: 'events',
     component: EventsComponent
   }, {
@@ -92,7 +96,8 @@ const routes: Route[] = [
     EventsComponent,
     OfflineOffersComponent,
     OnlineOffersComponent,
-    OfflineShopsComponent
+    OfflineShopsComponent,
+    AgentComponent
   ],
   imports: [
     RouterModule.forChild(routes),

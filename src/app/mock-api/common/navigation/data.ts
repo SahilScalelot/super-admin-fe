@@ -27,6 +27,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon : 'feather:users',
         link : '/admin/organizer'
     },{
+        id   : 'agents',
+        title: 'Agents',
+        type : 'basic',
+        icon : 'feather:users',
+        link : '/admin/agents'
+    },{
         id   : 'events',
         title: 'Events',
         type : 'basic',
