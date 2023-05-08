@@ -3,6 +3,7 @@ export interface InventoryProduct{
     itemname?: string;
     itemimage: string;
     description: string;
+    isonlyperperson: boolean;
     status: boolean;
 }
 

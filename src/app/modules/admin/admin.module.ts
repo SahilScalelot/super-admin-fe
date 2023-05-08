@@ -28,6 +28,7 @@ import { OfflineOffersComponent } from './offline-offers/offline-offers.componen
 import { OnlineOffersComponent } from './online-offers/online-offers.component';
 import { OfflineShopsComponent } from './offline-shops/offline-shops.component';
 import { AgentComponent } from './agent/agent.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 const routes: Route[] = [
   {
@@ -107,6 +108,7 @@ const routes: Route[] = [
     MatPaginatorModule,
     FuseConfirmationModule,
     MatIconModule,
+    MatRadioModule,
 
     MatSlideToggleModule,
     SharedModule,

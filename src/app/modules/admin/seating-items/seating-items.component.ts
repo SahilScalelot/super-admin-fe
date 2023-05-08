@@ -234,11 +234,12 @@ export class SeatingItemsComponent implements OnInit {
     }
     // Generate a new product
     const newProduct: InventoryProduct = {
-      _id          : '',
-      itemname     : '',
-      itemimage    : '',
-      description  : '',
-      status       : false
+      _id              : '',
+      itemname         : '',
+      itemimage        : '',
+      description      : '',
+      isonlyperperson  : false,
+      status           : false
     };
     this.products.unshift(newProduct);
     this.toggleDetails(newProduct);
@@ -253,11 +254,12 @@ export class SeatingItemsComponent implements OnInit {
 
   private _prepareItemsListForm(itemsListObj: any = {}): void {
     this.selectedItemsForm = this._formBuilder.group({
-      itemid      : [itemsListObj?._id || ''],
-      itemname    : [itemsListObj?.itemname || '', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
-      itemimage   : [itemsListObj?.itemimage || '', [Validators.required]],
-      description : [itemsListObj?.description || '', [Validators.required]],
-      status      : [itemsListObj?.status || false],
+      itemid          : [itemsListObj?._id || ''],
+      itemname        : [itemsListObj?.itemname || '', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
+      itemimage       : [itemsListObj?.itemimage || '', [Validators.required]],
+      description     : [itemsListObj?.description || '', [Validators.required]],
+      isonlyperperson : [itemsListObj?.isonlyperperson || false],
+      status          : [itemsListObj?.status || false],
     });
   }
 
