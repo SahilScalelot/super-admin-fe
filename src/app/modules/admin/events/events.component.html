@@ -318,7 +318,7 @@
                         <div class="space-y-1.5">
                           <h3 class="text-lg font-bold">Terms & Conditions</h3>
                           <div class="p-3.5 xl:p-5 bg-white rounded-md">
-                            <div [innerHTML]="(selectedProduct.tandc.t_and_c) ? selectedProduct.tandc.t_and_c : 'N/A'"></div>
+                            <div [innerHTML]="(selectedProduct?.tandc?.t_and_c) ? selectedProduct?.tandc?.t_and_c : 'N/A'"></div>
                           </div>
                         </div>
                         <!-- Social-Media -->
@@ -335,7 +335,7 @@
                                       </svg>
                                     </div>
                                   </div>
-                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct.tandc.facebook) ? selectedProduct.tandc.facebook : 'N/A'" placeholder="Enter URL" disabled />
+                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct?.tandc?.facebook) ? selectedProduct.tandc.facebook : 'N/A'" placeholder="Enter URL" disabled />
                                 </div>
                               </div>
                               <div class="w-full md:w-1/2 p-2">
@@ -355,7 +355,7 @@
                                       </svg>
                                     </div>
                                   </div>
-                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct.tandc.youtube) ? selectedProduct.tandc.youtube : 'N/A'" placeholder="Enter URL" disabled />
+                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct?.tandc?.youtube) ? selectedProduct.tandc.youtube : 'N/A'" placeholder="Enter URL" disabled />
                                 </div>
                               </div>
                               <div class="w-full md:w-1/2 p-2">
@@ -367,7 +367,7 @@
                                       </svg>
                                     </div>
                                   </div>
-                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct.tandc.twitter) ? selectedProduct.tandc.twitter : 'N/A'" placeholder="Enter URL" disabled />
+                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct?.tandc?.twitter) ? selectedProduct.tandc.twitter : 'N/A'" placeholder="Enter URL" disabled />
                                 </div>
                               </div>
                               <div class="w-full md:w-1/2 p-2">
@@ -379,7 +379,7 @@
                                       </svg>
                                     </div>
                                   </div>
-                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct.tandc.pinterest) ? selectedProduct.tandc.pinterest : 'N/A'" placeholder="Enter URL" disabled />
+                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct?.tandc?.pinterest) ? selectedProduct.tandc.pinterest : 'N/A'" placeholder="Enter URL" disabled />
                                 </div>
                               </div>
                               <div class="w-full md:w-1/2 p-2">
@@ -404,7 +404,7 @@
                                       </svg>
                                     </div>
                                   </div>
-                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct.tandc.instagram) ? selectedProduct.tandc.instagram : 'N/A'" placeholder="Enter URL" disabled />
+                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct?.tandc?.instagram) ? selectedProduct.tandc.instagram : 'N/A'" placeholder="Enter URL" disabled />
                                 </div>
                               </div>
                               <div class="w-full md:w-1/2 p-2">
@@ -416,7 +416,7 @@
                                       </svg>
                                     </div>
                                   </div>
-                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct.tandc.linkedin) ? selectedProduct.tandc.linkedin : 'N/A'" placeholder="Enter URL" disabled />
+                                  <input type="text" class="w-full outline-none text-gray-900 font-semibold" [value]="(selectedProduct?.tandc?.linkedin) ? selectedProduct.tandc.linkedin : 'N/A'" placeholder="Enter URL" disabled />
                                 </div>
                               </div>
                             </div>
