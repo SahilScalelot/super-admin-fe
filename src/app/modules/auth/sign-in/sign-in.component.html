@@ -28,16 +28,16 @@
 
                 <!-- Mobile field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Mobile address</mat-label>
+                    <mat-label>Admin id</mat-label>
                     <input
-                        id="mobile"
+                        id="adminid"
                         matInput
-                        [formControlName]="'mobile'">
-                    <mat-error *ngIf="signInForm.get('mobile').hasError('required')">
-                        Mobile address is required
+                        [formControlName]="'adminid'">
+                    <mat-error *ngIf="signInForm.get('adminid').hasError('required')">
+                        Admin Id is required
                     </mat-error>
-                    <mat-error *ngIf="signInForm.get('mobile').hasError('mobile')">
-                        Please enter a valid Mobile address
+                    <mat-error *ngIf="signInForm.get('adminid').hasError('adminid')">
+                        Please enter a valid Admin Id
                     </mat-error>
                 </mat-form-field>
 
