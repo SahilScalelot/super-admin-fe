@@ -29,6 +29,7 @@ import { OnlineOffersComponent } from './online-offers/online-offers.component';
 import { OfflineShopsComponent } from './offline-shops/offline-shops.component';
 import { AgentComponent } from './agent/agent.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Route[] = [
   {
@@ -79,6 +80,9 @@ const routes: Route[] = [
   }, {
     path: 'online-offer',
     component: OnlineOffersComponent
+  }, {
+    path: 'profile',
+    component: ProfileComponent
   }
 ];
 
@@ -98,7 +102,8 @@ const routes: Route[] = [
     OfflineOffersComponent,
     OnlineOffersComponent,
     OfflineShopsComponent,
-    AgentComponent
+    AgentComponent,
+    ProfileComponent
   ],
   imports: [
     RouterModule.forChild(routes),
