@@ -14,8 +14,8 @@ export class FCoinService {
     return this.http.post(environment.appURL + 'superadmin/discount', filter, this._globalFunctions.getFileAuthorizationHeader());
   }
 
-  createAndUpdate(discountObj: any = ''): any {
-    return this.http.post(environment.appURL + 'superadmin/discount/save', discountObj, this._globalFunctions.getAuthorizationHeader());
+  generateCoins(generateCoinsObj: any = ''): any {
+    return this.http.post(environment.appURL + 'superadmin/fcoin/generatecoins', generateCoinsObj, this._globalFunctions.getAuthorizationHeader());
   }
 
   delete(discountId: any = ''): any {

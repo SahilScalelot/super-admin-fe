@@ -156,7 +156,7 @@ export class FCoinComponent implements OnInit {
     }
 
     const preparedItemsObj: any = this.prepareItemsObj(this.discountsForm.value, discountId);
-    this._discountsService.createAndUpdate(preparedItemsObj).subscribe((result: any) => {
+    this._discountsService.generateCoins(preparedItemsObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.showFlashMessage('success');
         const index = (discountId == '') ? 0 : this.products.findIndex((item: any) => item._id === discountId);
