@@ -92,6 +92,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:ticket',
         link : '/admin/event-booking-coupons'
+    },{
+        id   : 'fCoin',
+        title: 'F-Coin',
+        type : 'basic',
+        icon : 'heroicons_outline:database',
+        link : '/admin/f-coin'
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [

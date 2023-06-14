@@ -30,6 +30,8 @@ import { OfflineShopsComponent } from './offline-shops/offline-shops.component';
 import { AgentComponent } from './agent/agent.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { ProfileComponent } from './profile/profile.component';
+import { FCoinComponent } from './f-coin/f-coin.component';
+import { FAddCoinComponent } from './f-coin/add-coin/add-coin.component';
 
 const routes: Route[] = [
   {
@@ -83,6 +85,12 @@ const routes: Route[] = [
   }, {
     path: 'profile',
     component: ProfileComponent
+  }, {
+    path: 'f-coin',
+    component: FCoinComponent
+  }, {
+    path: 'f-coin/add-coin',
+    component: FAddCoinComponent
   }
 ];
 
@@ -103,7 +111,9 @@ const routes: Route[] = [
     OnlineOffersComponent,
     OfflineShopsComponent,
     AgentComponent,
-    ProfileComponent
+    ProfileComponent,
+    FCoinComponent,
+    FAddCoinComponent
   ],
   imports: [
     RouterModule.forChild(routes),
