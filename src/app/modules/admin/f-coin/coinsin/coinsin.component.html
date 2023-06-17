@@ -1,0 +1,81 @@
+  <!-- Main -->
+  <div class="flex flex-auto overflow-hidden">
+    <!-- Products list -->
+    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+      <ng-container>
+        <ng-container *ngIf="coinsInList.length > 0; else noProducts">
+          <div class="grid">
+            <!-- Header -->
+            <div class="inventory-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" matSort matSortDisableClear (matSortChange)="getEvent($event)">
+              <div>Tr / Ref no</div>
+              <div>Cheque No</div>
+              <div>Bank name</div>
+              <div>IFSC code</div>
+              <div>Amount</div>
+              <div>Coins</div>
+              <div>Date & Time</div>
+              <div>Created By</div>
+              <div>Document</div>
+            </div>
+            <!-- Rows -->
+            <ng-container>
+              <ng-container *ngFor="let product of coinsInList;">
+
+                <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
+                  <!-- Name -->
+                  <div class="truncate">{{(product.transaction_reference_id) ? product.transaction_reference_id : 'N/A'}}</div>
+                  <div class="truncate">{{(product.chequeno) ? product.chequeno : 'N/A'}}</div>
+                  <div class="truncate">{{(product.bank_name) ? product.bank_name : 'N/A'}}</div>
+                  <div class="truncate">{{(product.ifsc_code) ? product.ifsc_code : 'N/A'}}</div>
+                  <div class="truncate">₹{{(product.amount) ? product.amount : 'N/A'}}</div>
+                  <div class="truncate">{{(product.coin_amount) ? product.coin_amount : 'N/A'}}</div>
+                  <div class="truncate">{{(product.timestamp) ? (product.timestamp | date:'dd - MMM, yyyy') : 'N/A'}}</div>
+                  <div class="truncate">{{(product.createdBy.name) ? product.createdBy.name : 'N/A'}}</div>
+                  <!-- Details button -->
+                  <div class="">
+                    <!-- <button class="min-w-10 min-h-7 h-7 px-2 leading-6" mat-stroked-button (click)="toggleDetails(product, true)"> <mat-icon class="icon-size-5" [svgIcon]="selectedProduct?.id === product.id ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon></button> -->
+                    <a href="{{constants.baseImageURL + product.document_file}}" target="_blank" class="block text-green-500" *ngIf="product.document_file">
+                      <mat-icon class="text-current" svgIcon="heroicons_outline:document-text"></mat-icon>
+                    </a>
+                    <div class="block text-red-600" *ngIf="product.document_file == ''">
+                      <mat-icon class="text-current" svgIcon="heroicons_outline:document-remove"></mat-icon>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid">
+                  <ng-container *ngIf="selectedProduct?._id === product._id">
+                    <ng-container *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: product}"></ng-container>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+
+          <mat-paginator
+            class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+            (page)="getEvent($event)"
+            [ngClass]="{'pointer-events-none': isLoading}" 
+            [length]="pagination?.totalDocs || 0" 
+            [pageIndex]="pagination?.page - 1 || 0"
+            [pageSize]="pagination?.limit || 10" 
+            [pageSizeOptions]="[10, 20, 30, 50]" 
+            [showFirstLastButtons]="true"></mat-paginator>
+
+        </ng-container>
+      </ng-container>
+
+      <ng-template #rowDetailsTemplate let-product>
+        <div class="shadow-lg overflow-hidden">
+          <div class="flex flex-wrap border-b">
+            <!-- {{selectedProduct}} -->
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #noProducts>
+        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center" *ngIf="isCoinsInLoading">Please Wait...</div>
+        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center" *ngIf="!isCoinsInLoading">There are no Coins In!</div>
+      </ng-template>
+    </div>
+  </div>

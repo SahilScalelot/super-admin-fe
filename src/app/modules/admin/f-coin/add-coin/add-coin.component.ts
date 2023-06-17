@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { FCoinService } from '../f-coin.service';
 
+declare let $: any;
+
 @Component({
   selector: 'add-coin',
   templateUrl: './add-coin.component.html',
@@ -25,6 +27,7 @@ export class FAddCoinComponent implements OnInit {
   selectedProduct: any;
 
   transactionChequeFlashMessage: 'success' | 'error' | null = null;
+  flashMessage: 'success' | 'error' | null = null;
 
   pagination: any = {};
   filterObj: any = {};
@@ -49,29 +52,10 @@ export class FAddCoinComponent implements OnInit {
       sortfield: "_id",
       sortoption: "-1",
     };
-    this.getEvent();
     this._prepareItemsListForm();
   }
 
-  getEvent(): void {
-    this.isLoading = true;
-    this._fCoinService.getList(this.filterObj).subscribe((result: any) => {
-      if (result && result.IsSuccess) {
-        this.products = result.Data.docs;
-        const pagination: any = this._globalFunctions.copyObject(result.Data);
-        delete pagination.docs;
-        this.pagination = pagination;
-      } else {
-        this._globalFunctions.successErrorHandling(result, this, true);
-      }
-      this.isLoading = false;
-    }, (error: any) => {
-      this._globalFunctions.errorHanding(error, this, true);
-      this.isLoading = false;
-    });
-  }
-
-  showTransactionChequeFlashMessageFlashMessage(type: 'success' | 'error'): void {
+  showTransactionChequeFlashMessage(type: 'success' | 'error'): void {
     // Show the message
     this.transactionChequeFlashMessage = type;
     // Mark for check
@@ -79,6 +63,19 @@ export class FAddCoinComponent implements OnInit {
     // Hide it after 3 seconds
     setTimeout(() => {
       this.transactionChequeFlashMessage = null;
+      // Mark for check
+      this._changeDetectorRef.markForCheck();
+    }, 4000);
+  }
+
+  showFlashMessage(type: 'success' | 'error'): void {
+    // Show the message
+    this.flashMessage = type;
+    // Mark for check
+    this._changeDetectorRef.markForCheck();
+    // Hide it after 3 secondsś
+    setTimeout(() => {
+      this.flashMessage = null;
       // Mark for check
       this._changeDetectorRef.markForCheck();
     }, 3000);
@@ -90,46 +87,48 @@ export class FAddCoinComponent implements OnInit {
   }
 
   addCoinSubmit(): void {
+    if (this.addCoinForm.value && this.addCoinForm.value.transaction_reference_id == "" && this.addCoinForm.value.chequeno == "") {
+      console.log(this.addCoinForm.value);
+      this.showTransactionChequeFlashMessage('error');
+      return;
+    }
     if (this.addCoinForm.invalid) {
-      if (this.addCoinForm.transaction_reference_id != "" || this.addCoinForm.chequeno != "") {
-        this.showTransactionChequeFlashMessageFlashMessage('error');
-      }
       Object.keys(this.addCoinForm.controls).forEach((key) => {
         this.addCoinForm.controls[key].touched = true;
         this.addCoinForm.controls[key].markAsDirty();
       });
       return;
     }
-
     const preparedItemsObj: any = this.prepareItemsObj(this.addCoinForm.value);
-    
-    console.log(preparedItemsObj);
-    // this._fCoinService.generateCoins(preparedItemsObj).subscribe((result: any) => {
-    //   if (result && result.IsSuccess) {
-    //     this.showFlashMessage('success');
-    //     const index = (discountId == '') ? 0 : this.products.findIndex((item: any) => item._id === discountId);
-    //     const tmpProducts: any = this._globalFunctions.copyObject(this.products);
-    //     if (index != -1) {
-    //       tmpProducts[index] = result?.Data;
-    //     }
-    //     this.products = [...this._globalFunctions.copyObject(tmpProducts)];
-    //   } else {
-    //     this.showFlashMessage('error');
-    //     this._globalFunctions.successErrorHandling(result, this, true);
-    //   }
-    //   this.isLoading = false;
-    // }, (error: any) => {
-    //   this._globalFunctions.errorHanding(error, this, true);
-    //   this.isLoading = false;
-    // });
+    this._fCoinService.generateCoins(preparedItemsObj).subscribe((result: any) => {
+      if (result && result.IsSuccess) {
+        this.showFlashMessage('success');
+      } else {
+        this.showFlashMessage('error');
+        this._globalFunctions.successErrorHandling(result, this, true);
+      }
+      this.isLoading = false;
+    }, (error: any) => {
+      this._globalFunctions.errorHanding(error, this, true);
+      this.isLoading = false;
+    });
   }
 
   prepareItemsObj(generateCoinObj: any): any {
-    const preparedgenerateCoinObj: any = this._globalFunctions.copyObject(generateCoinObj);
-    // document_file
-    // pdfFormData.append('file', pdfUpload);
+    let coinDataObj = new FormData();
+    for (const key in generateCoinObj) {
+      if (key !== 'document_file') {
+        coinDataObj.append(key, generateCoinObj[key]);
+      }
+    }
 
-    return preparedgenerateCoinObj;
+    const documentInput: any = document.getElementById('document_file');
+    const documentFile = documentInput.files[0];
+    if (documentFile !== undefined) {
+      coinDataObj.append('file', documentFile);
+    }
+
+    return coinDataObj;
   }
 
   private _prepareItemsListForm(itemsListObj: any = {}): void {

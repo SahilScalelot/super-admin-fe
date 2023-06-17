@@ -32,6 +32,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ProfileComponent } from './profile/profile.component';
 import { FCoinComponent } from './f-coin/f-coin.component';
 import { FAddCoinComponent } from './f-coin/add-coin/add-coin.component';
+import { CoinsInComponent } from './f-coin/coinsin/coinsin.component';
+import { CoinsOutComponent } from './f-coin/coinsout/coinsout.component';
 
 const routes: Route[] = [
   {
@@ -113,7 +115,9 @@ const routes: Route[] = [
     AgentComponent,
     ProfileComponent,
     FCoinComponent,
-    FAddCoinComponent
+    FAddCoinComponent,
+    CoinsInComponent,
+    CoinsOutComponent
   ],
   imports: [
     RouterModule.forChild(routes),

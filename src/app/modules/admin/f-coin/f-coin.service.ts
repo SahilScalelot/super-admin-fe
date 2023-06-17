@@ -10,12 +10,20 @@ export class FCoinService {
 
   constructor(private http: HttpClient,private _globalFunctions: GlobalFunctions) { }
   
-  getList(filter: any = {}): any {
-    return this.http.post(environment.appURL + 'superadmin/discount', filter, this._globalFunctions.getFileAuthorizationHeader());
+  getCoinBalance(): any {
+    return this.http.get(environment.appURL + 'superadmin/fcoin/coinbalance', this._globalFunctions.getFileAuthorizationHeader());
   }
 
+  getCoinsIn(filterObj: any = ''): any {
+    return this.http.post(environment.appURL + 'superadmin/fcoin/coinsin', filterObj, this._globalFunctions.getAuthorizationHeader());
+  }
+
+  getCoinsOut(filterObj: any = ''): any {
+    return this.http.post(environment.appURL + 'superadmin/fcoin/coinsout', filterObj, this._globalFunctions.getAuthorizationHeader());
+  }
+  
   generateCoins(generateCoinsObj: any = ''): any {
-    return this.http.post(environment.appURL + 'superadmin/fcoin/generatecoins', generateCoinsObj, this._globalFunctions.getAuthorizationHeader());
+    return this.http.post(environment.appURL + 'superadmin/fcoin/generatecoins', generateCoinsObj, this._globalFunctions.getFileAuthorizationHeader());
   }
 
   delete(discountId: any = ''): any {

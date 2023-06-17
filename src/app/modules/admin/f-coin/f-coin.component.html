@@ -1,7 +1,7 @@
 <div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
 
   <!-- Header -->
-  <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+  <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-4 px-6 md:px-8 border-b">
     <!-- Loader -->
     <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
       <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
@@ -9,13 +9,18 @@
     <!-- Title -->
     <div class="text-4xl font-extrabold tracking-tight">F Coin</div>
     <!-- Actions -->
-    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-      <!-- Search -->
-      <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded min-w-64" *ngIf="false">
-        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-        <input matInput [autocomplete]="'off'" [placeholder]="'Search products'" (keyup)="search($event)">
-        <!-- [formControl]="searchInputControl" -->
-      </mat-form-field>
+    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4 space-x-9">
+      <div class="flex flex-col items-center justify-center py-3 text-gray-800">
+        <div class="text-5xl font-semibold leading-none tracking-tight">{{coinBalance}}</div>
+        <div class="mt-1 text-sm font-medium text-center">Total Coin Balance</div>
+      </div>
+      <div class="">
+        <div class="flex items-center w-full">
+          <span class="font-bold px-5" [ngClass]="{'text-primary' : !coinSwitch}">F-Coin Out</span>
+          <mat-slide-toggle [color]="'primary'" [(ngModel)]="coinSwitch"></mat-slide-toggle>
+          <span class="font-bold px-5" [ngClass]="{'text-primary' : coinSwitch}">F-Coin In</span>
+        </div>
+      </div>
       <!-- Add product button -->
       <button class="ml-4" mat-flat-button [color]="'primary'" [routerLink]="['add-coin']">
         <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
@@ -24,149 +29,11 @@
     </div>
   </div>
 
-  <!-- Main -->
-  <div class="flex flex-auto overflow-hidden">
-    <!-- Products list -->
-    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
-      <ng-container>
-        <ng-container *ngIf="products.length > 0; else noProducts">
-          <div class="grid">
-            <!-- Header -->
-            <div
-              class="inventory-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
-              matSort matSortDisableClear (matSortChange)="getEvent($event)">
-              <div [mat-sort-header]="'discountname'">Discount Name</div>
-              <div [mat-sort-header]="'discounttype'">Discount Type</div>
-              <div class="hidden lg:block" [mat-sort-header]="'description'">Description</div>
-              <div class="hidden lg:block" [mat-sort-header]="'discount'">Discount</div>
-              <div class="hidden lg:block" [mat-sort-header]="'tandc'">Terms And Condition</div>
-              <div class="hidden lg:block" [mat-sort-header]="'status'">Status</div>
-              <div class="hidden sm:block" [mat-sort-header]="'_id'">Details</div>
-            </div>
-            <!-- Rows -->
-            <ng-container>
-              <ng-container *ngFor="let product of products;">
-
-                <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
-                  <!-- Name -->
-                  <div class="truncate">{{(product.discountname) ? product.discountname : 'N/A'}}</div>
-                  <div class="truncate">{{(product.discounttype) ? product.discounttype : 'N/A'}}</div>
-                  <div class="truncate">{{(product.description) ? product.description : 'N/A'}}</div>
-                  <div class="truncate">{{(product.discount) ? product.discount : 'N/A'}}</div>
-                  <div class="truncate">{{(product.tandc) ? product.tandc : 'N/A'}}</div>
-                  <!-- Active -->
-                  <div class="hidden lg:block">
-                    <ng-container *ngIf="product.status">
-                      <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                    </ng-container>
-                    <ng-container *ngIf="!product.status">
-                      <mat-icon class="text-gray-400 icon-size-5" [svgIcon]="'heroicons_solid:x'"></mat-icon>
-                    </ng-container>
-                  </div>
-                  <!-- Details button -->
-                  <div><button class="min-w-10 min-h-7 h-7 px-2 leading-6" mat-stroked-button (click)="toggleDetails(product, true)"> <mat-icon class="icon-size-5" [svgIcon]="selectedProduct?.id === product.id ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon></button></div>
-                </div>
-
-                <div class="grid">
-                  <ng-container *ngIf="selectedProduct?._id === product._id">
-                    <ng-container *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: product}"></ng-container>
-                  </ng-container>
-                </div>
-              </ng-container>
-            </ng-container>
-          </div>
-
-          <mat-paginator
-            class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-            (page)="getEvent($event)"
-            [ngClass]="{'pointer-events-none': isLoading}" 
-            [length]="pagination?.totalDocs || 0" 
-            [pageIndex]="pagination?.page - 1 || 0"
-            [pageSize]="pagination?.limit || 10" 
-            [pageSizeOptions]="[10, 20, 30, 50]" 
-            [showFirstLastButtons]="true"></mat-paginator>
-
-        </ng-container>
-      </ng-container>
-
-      <ng-template #rowDetailsTemplate let-product>
-        <div class="shadow-lg overflow-hidden">
-          <div class="flex border-b">
-            <!-- Selected product form -->
-            <form class="flex flex-col w-full" [formGroup]="discountsForm">
-
-              <div class="flex flex-col sm:flex-row p-8">
-                
-                <div class="flex flex-auto flex-wrap">
-                  <div class="flex flex-col w-full lg:w-2/4 2xl:w-1/4 px-4">
-                    <mat-form-field class="w-full">
-                      <mat-label>Name</mat-label>
-                      <input matInput [formControlName]="'discountname'">
-                    </mat-form-field>
-                  </div>
-                  <div class="flex flex-col w-full lg:w-2/4 2xl:w-1/4 px-4">
-                    <mat-form-field class="w-full">
-                      <mat-label>Discount Type</mat-label>
-                      <input matInput [formControlName]="'discounttype'">
-                    </mat-form-field>
-                  </div>
-                  <div class="flex flex-col w-full lg:w-2/4 2xl:w-1/4 px-4">
-                    <mat-form-field class="w-full">
-                      <mat-label>Discount</mat-label>
-                      <input matInput [formControlName]="'discount'">
-                    </mat-form-field>
-                  </div>
-                  <div class="flex flex-col w-full lg:w-2/4 2xl:w-1/4 px-4">
-                    <span class="font-semibold mb-2">Product status</span>
-                    <mat-slide-toggle [formControlName]="'status'" [color]="'primary'">
-                      {{discountsForm.get('status').value === true ? 'Active' : 'Disabled'}}
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="flex flex-col w-full px-4">
-                    <mat-form-field class="w-full">
-                      <mat-label>Description</mat-label>
-                      <!-- <input matInput [formControlName]="'description'"> -->
-                      <textarea matInput [formControlName]="'description'" rows="5"></textarea>
-                    </mat-form-field>
-                  </div>
-                  <div class="flex flex-col w-full px-4">
-                    <mat-form-field class="w-full">
-                      <mat-label>Terms And Condition</mat-label>
-                      <!-- <input matInput [formControlName]="'tandc'"> -->
-                      <textarea matInput [formControlName]="'tandc'" rows="5"></textarea>
-                    </mat-form-field>
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="flex items-center justify-between w-full border-t px-8 py-4">
-                <button class="-ml-4" mat-button [color]="'warn'" (click)="deleteSelectedProduct()"> Delete </button>
-                <div class="flex items-center">
-                  <div class="flex items-center mr-4" *ngIf="flashMessage">
-                    <ng-container *ngIf="flashMessage === 'success'">
-                      <mat-icon class="text-green-500" [svgIcon]="'heroicons_outline:check'"></mat-icon>
-                      <span class="ml-2">Discount updated</span>
-                    </ng-container>
-                    <ng-container *ngIf="flashMessage === 'error'">
-                      <mat-icon class="text-red-500" [svgIcon]="'heroicons_outline:x'"></mat-icon>
-                      <span class="ml-2">An error occurred, try again!</span>
-                    </ng-container>
-                  </div>
-                  <button mat-flat-button [color]="'primary'" (click)="updateSelectedProduct(selectedProduct._id)" [disabled]="discountsForm.invalid">
-                    {{(selectedProduct._id && selectedProduct._id != '') ? 'Update' : 'Add Discount'}}
-                  </button>
-                </div>
-              </div>
-
-            </form>
-          </div>
-        </div>
-      </ng-template>
-
-      <ng-template #noProducts>
-        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no Discount!</div>
-      </ng-template>
-    </div>
+  <div *ngIf="coinSwitch">
+    <coinsin></coinsin>
   </div>
+  <div *ngIf="!coinSwitch">
+    <coinsout></coinsout>
+  </div>
+
 </div>
