@@ -7,6 +7,7 @@ import { GlobalFunctions } from 'app/layout/common/global-functions';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { FCoinService } from '../f-coin.service';
+import { Router } from '@angular/router';
 
 declare let $: any;
 
@@ -36,12 +37,11 @@ export class FAddCoinComponent implements OnInit {
    * Constructor
    */
   constructor(
-    private _formBuilder: FormBuilder,
-    private _fCoinService: FCoinService,
-    private _globalFunctions: GlobalFunctions,
-
     private _changeDetectorRef: ChangeDetectorRef,
-    private _fuseConfirmationService: FuseConfirmationService,
+    private _globalFunctions: GlobalFunctions,
+    private _fCoinService: FCoinService,
+    private _formBuilder: FormBuilder,
+    private _router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -103,6 +103,7 @@ export class FAddCoinComponent implements OnInit {
     this._fCoinService.generateCoins(preparedItemsObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         this.showFlashMessage('success');
+        this._router.navigate(['/admin/f-coin']);
       } else {
         this.showFlashMessage('error');
         this._globalFunctions.successErrorHandling(result, this, true);

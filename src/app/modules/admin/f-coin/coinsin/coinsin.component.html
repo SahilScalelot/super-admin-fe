@@ -6,22 +6,22 @@
         <ng-container *ngIf="coinsInList.length > 0; else noProducts">
           <div class="grid">
             <!-- Header -->
-            <div class="inventory-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" matSort matSortDisableClear (matSortChange)="getEvent($event)">
-              <div>Tr / Ref no</div>
-              <div>Cheque No</div>
-              <div>Bank name</div>
-              <div>IFSC code</div>
-              <div>Amount</div>
-              <div>Coins</div>
-              <div>Date & Time</div>
-              <div>Created By</div>
-              <div>Document</div>
+            <div class="inventory-grid z-10 sticky top-0 grid gap-4 py-3 xl:py-4 px-6 md:px-8 shadow text-sm xl:text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" matSort matSortDisableClear (matSortChange)="getEvent($event)">
+              <div class="truncate">Tr / Ref no</div>
+              <div class="truncate">Cheque No</div>
+              <div class="truncate">Bank name</div>
+              <div class="truncate">IFSC code</div>
+              <div class="truncate">Amount</div>
+              <div class="truncate">Coins</div>
+              <div class="truncate">Date & Time</div>
+              <div class="truncate">Created By</div>
+              <div class="truncate">Document</div>
             </div>
             <!-- Rows -->
             <ng-container>
               <ng-container *ngFor="let product of coinsInList;">
 
-                <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
+                <div class="inventory-grid grid items-center gap-4 py-3 xl:py-3 px-6 md:px-8 border-b text-sm xl:text-md">
                   <!-- Name -->
                   <div class="truncate">{{(product.transaction_reference_id) ? product.transaction_reference_id : 'N/A'}}</div>
                   <div class="truncate">{{(product.chequeno) ? product.chequeno : 'N/A'}}</div>
@@ -35,10 +35,10 @@
                   <div class="">
                     <!-- <button class="min-w-10 min-h-7 h-7 px-2 leading-6" mat-stroked-button (click)="toggleDetails(product, true)"> <mat-icon class="icon-size-5" [svgIcon]="selectedProduct?.id === product.id ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon></button> -->
                     <a href="{{constants.baseImageURL + product.document_file}}" target="_blank" class="block text-green-500" *ngIf="product.document_file">
-                      <mat-icon class="text-current" svgIcon="heroicons_outline:document-text"></mat-icon>
+                      <mat-icon class="text-current icon-size-4 xl:icon-size-6" svgIcon="heroicons_outline:document-text"></mat-icon>
                     </a>
                     <div class="block text-red-600" *ngIf="product.document_file == ''">
-                      <mat-icon class="text-current" svgIcon="heroicons_outline:document-remove"></mat-icon>
+                      <mat-icon class="text-current icon-size-4 xl:icon-size-6" svgIcon="heroicons_outline:document-remove"></mat-icon>
                     </div>
                   </div>
                 </div>

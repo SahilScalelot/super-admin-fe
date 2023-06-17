@@ -1,15 +1,15 @@
 .inventory-grid {
-  grid-template-columns: 48px auto 40px;
+  grid-template-columns: 50% 50%;
 
   @screen sm {
-    grid-template-columns: 120px 120px auto 112px 72px;
+    grid-template-columns: 20% 20% 20% 20% 20%;
   }
 
   @screen md {
-    grid-template-columns: auto 150px 190px 190px 120px 120px 150px 190px 72px;
+    grid-template-columns: auto 110px 140px 140px 80px 80px 120px 130px 82px;
   }
 
-  @screen lg {
+  @screen 2xl {
     grid-template-columns: auto 150px 190px 190px 120px 120px 150px 190px 72px;
   }
 }
