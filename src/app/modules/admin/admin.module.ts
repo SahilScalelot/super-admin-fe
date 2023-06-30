@@ -34,6 +34,7 @@ import { FCoinComponent } from './f-coin/f-coin.component';
 import { FAddCoinComponent } from './f-coin/add-coin/add-coin.component';
 import { CoinsInComponent } from './f-coin/coinsin/coinsin.component';
 import { CoinsOutComponent } from './f-coin/coinsout/coinsout.component';
+import { UsersComponent } from './users/users.component';
 
 const routes: Route[] = [
   {
@@ -72,6 +73,9 @@ const routes: Route[] = [
   }, {
     path: 'agents',
     component: AgentComponent
+  }, {
+    path: 'users',
+    component: UsersComponent
   }, {
     path: 'events',
     component: EventsComponent
@@ -113,6 +117,7 @@ const routes: Route[] = [
     OnlineOffersComponent,
     OfflineShopsComponent,
     AgentComponent,
+    UsersComponent,
     ProfileComponent,
     FCoinComponent,
     FAddCoinComponent,

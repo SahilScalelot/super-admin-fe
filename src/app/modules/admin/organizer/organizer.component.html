@@ -39,6 +39,7 @@
               <div class="hidden lg:block" [mat-sort-header]="'email'">Email</div>
               <div class="hidden lg:block" [mat-sort-header]="'agentid?._id'">Agent</div>
               <div class="hidden lg:block" [mat-sort-header]="'mobile'">Mobile No.</div>
+              <div class="hidden lg:block" [mat-sort-header]="'createdAt'">Register at</div>
               <div class="hidden lg:block" [mat-sort-header]="'is_approved'">Is Approved</div>
               <div class="hidden lg:block" [mat-sort-header]="'status'">Status</div>
               <div class="hidden sm:block" [mat-sort-header]="'_id'">Details</div>
@@ -53,6 +54,7 @@
                   <div class="truncate">{{product.email}}</div>
                   <div class="truncate">{{product?.agentid?.name ? product.agentid.name : 'N/A'}}</div>
                   <div class="truncate">{{product.country_code + ' ' + product.mobile}}</div>
+                  <div class="truncate">{{product.createdAt | date:"dd/MM/yyyy || hh:mm"}}</div>
                   <!-- Active -->
                   <div class="hidden lg:block">
                     <ng-container *ngIf="product.is_approved">
