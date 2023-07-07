@@ -45,6 +45,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon : 'heroicons_outline:calendar',
         link : '/admin/events'
     },{
+        id   : 'live-streams',
+        title: 'Live Strams',
+        type : 'basic',
+        icon : 'mat_solid:live_tv',
+        link : '/admin/live-streams'
+    },{
         id   : 'offlineShops',
         title: 'Offline Shops',
         type : 'basic',

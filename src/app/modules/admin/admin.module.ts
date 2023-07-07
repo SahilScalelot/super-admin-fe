@@ -35,6 +35,7 @@ import { FAddCoinComponent } from './f-coin/add-coin/add-coin.component';
 import { CoinsInComponent } from './f-coin/coinsin/coinsin.component';
 import { CoinsOutComponent } from './f-coin/coinsout/coinsout.component';
 import { UsersComponent } from './users/users.component';
+import { LiveStreamsComponent } from './live-stream/live-stream.component';
 
 const routes: Route[] = [
   {
@@ -80,6 +81,9 @@ const routes: Route[] = [
     path: 'events',
     component: EventsComponent
   }, {
+    path: 'live-streams',
+    component: LiveStreamsComponent
+  }, {
     path: 'offline-shops',
     component: OfflineShopsComponent
   }, {
@@ -113,6 +117,7 @@ const routes: Route[] = [
     EventBookingCouponsComponent,
     OrganizerComponent,
     EventsComponent,
+    LiveStreamsComponent,
     OfflineOffersComponent,
     OnlineOffersComponent,
     OfflineShopsComponent,
