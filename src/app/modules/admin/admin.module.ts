@@ -36,6 +36,7 @@ import { CoinsInComponent } from './f-coin/coinsin/coinsin.component';
 import { CoinsOutComponent } from './f-coin/coinsout/coinsout.component';
 import { UsersComponent } from './users/users.component';
 import { LiveStreamsComponent } from './live-stream/live-stream.component';
+import { Time24to12Format } from 'app/pipe/time24to12.pipe';
 
 const routes: Route[] = [
   {
@@ -127,7 +128,8 @@ const routes: Route[] = [
     FCoinComponent,
     FAddCoinComponent,
     CoinsInComponent,
-    CoinsOutComponent
+    CoinsOutComponent,
+    Time24to12Format
   ],
   imports: [
     RouterModule.forChild(routes),

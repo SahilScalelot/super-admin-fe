@@ -124,8 +124,8 @@ export class LiveStreamsComponent implements OnInit {
   approve(organizerObj: any): void {
     // Open the confirmation dialog
     const confirmation = this._fuseConfirmationService.open({
-      title: 'Approve Organizer',
-      message: 'Are you sure you want to Approve this {{organizerObj.name}} organizer.',
+      title: 'Approve Live Stream',
+      message: 'Are you sure you want to Approve this ' + organizerObj.event_name + ' live stream.',
       actions: {
         confirm: {
           label: 'Approve'
@@ -156,8 +156,8 @@ export class LiveStreamsComponent implements OnInit {
   disapprove(organizerObj: any): void {
     // Open the confirmation dialog
     const confirmation = this._fuseConfirmationService.open({
-      title: 'Disapprove Organizer',
-      message: 'Are you sure you want to Disapprove this ' + organizerObj.name + ' organizer.',
+      title: 'Disapprove Live Stream',
+      message: 'Are you sure you want to Disapprove this ' + organizerObj.event_name + ' live stream.',
       actions: {
         confirm: {
           label: 'Disapprove'
@@ -188,8 +188,8 @@ export class LiveStreamsComponent implements OnInit {
   deleteSelectedProduct(organizerObj: any): void {
     // Open the confirmation dialog
     const confirmation = this._fuseConfirmationService.open({
-      title: 'Delete product',
-      message: 'Are you sure you want to remove ' + organizerObj.name + '? This action cannot be undone!',
+      title: 'Delete Live Stream',
+      message: 'Are you sure you want to remove ' + organizerObj.event_name + '? This action cannot be undone!',
       actions: {
         confirm: {
           label: 'Delete'

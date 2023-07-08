@@ -111,9 +111,138 @@
             <!-- Selected product form -->
             <div class="flex flex-col w-full bg-default">
                 
-              
+              <div class="w-full mb-4">
+                <!-- <div class="relative h-50 overflow-hidden -z-10">
+                  <img [src]="!!(selectedProduct?.banner) ? constants.baseImageURL + selectedProduct.banner : constants.defaultImage" alt="dashboard-bg"
+                    class="absolute inset-0 w-full object-cover" />
+                </div> -->
+                <div class="relative h-50 overflow-hidden -z-10" *ngIf="!!(selectedProduct?.banner)">
+                  <img [src]="constants?.baseImageURL + selectedProduct?.banner" alt="dashboard-bg" class="absolute inset-0 w-full object-cover" />
+                </div>
+
+                <div class="max-w-screen-xl mx-auto px-3.5 md:px-5 min-h-full relative -mt-5">
+                  <div class="flex items-center justify-between bg-white py-5 px-7 rounded-md shadow">
+                    <h2 class="font-bold text-2xl">{{(selectedProduct?.event_name) ? selectedProduct?.event_name : 'N/A'}}</h2>
+                    <!-- <div>
+                      <span class="text-quicksilver text-xs font-bold"><mat-icon svgIcon="heroicons_outline:calendar" class="icon-size-4 mr-1"></mat-icon> Date</span>
+                      <p class="text-sm font-bold text-japaneseIndigo">{{selectedProduct?.start_date | date: 'dd MMM, yyyy'}} - {{selectedProduct?.end_date | date: 'dd MMM, yyyy'}}</p>
+                    </div> -->
+                  </div>
+
+                  <div class="flex flex-wrap space-y-7 pt-5">
+                    <div class="w-full lg:w-8/12 lg:pr-5 space-y-7">
+                      <!-- About Shop  -->
+                      <div class="p-7 bg-white rounded-md space-y-2" *ngIf="selectedProduct?.event_description">
+                        <h3 class="text-lg">About Shop</h3>
+                        <div [innerHtml]="selectedProduct?.event_description"></div>
+                        <!-- <p class="text-quicksilver text-sm font-normal">{{selectedProduct?.event_description}}</p> -->
+                      </div>
+                      <!-- Rainy season sale -->
+                      <div class="space-y-2.5">
+                        <!-- Photo-holder -->
+                        <div class="media-upload-holder" *ngIf="!!(selectedProduct?.photos?.length)">
+                          <!-- media title  -->
+                          <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-bold">Photo</h3>
+                          </div>
+                          <!-- photo-holder -->
+                          <div class="w-full">
+                            <div class="flex flex-wrap -mx-2">
+                              <div class="w-full lg:w-2/12 p-2" *ngFor="let photo of selectedProduct?.photos, let i = index">
+                                <div class="rounded relative h-14 xl:h-18 overflow-hidden bg-white">
+                                  <img [src]="constants?.baseImageURL + photo?.url" [alt]="'photo'+ i" class="w-full h-full absolute inset-0 object-cover" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- videos-holder -->
+                        <div class="media-upload-holder" *ngIf="!!(selectedProduct?.videos?.length)">
+                          <!-- media title  -->
+                          <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-bold">Videos</h3>
+                          </div>
+                          <!-- media-holder -->
+                          <div class="w-full">
+                            <div class="flex flex-wrap -mx-2">
+                              <div class="w-full lg:w-1/5 p-2" *ngFor="let video of selectedProduct?.videos, let i = index">
+                                <div class="rounded relative h-18 xl:h-22 overflow-hidden">
+                                  <video [src]="constants?.baseImageURL + video?.url" class="w-full h-full object-cover absolute inset-0"></video>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+          
+                       <!-- Company Details -->
+                        <div class="space-y-1.5">
+                          <h3 class="text-lg font-bold">Company Details</h3>
+                          <div class="p-7 bg-white rounded-md space-y-1">
+                            <h3 class="font-bold text-xl">{{(selectedProduct?.companydetail?.name) ? selectedProduct?.companydetail?.name : 'N/A'}}</h3>
+                          </div>
+                        </div>
+                        <!-- Terms & Conditions -->
+                        <div *ngIf="selectedProduct && selectedProduct.tandc && selectedProduct.tandc.t_and_c && selectedProduct.tandc.t_and_c != ''" class="space-y-4">
+                          <h3 class="text-lg">Terms & Conditions</h3>
+                          <div class="p-3.5 xl:p-5 bg-white rounded-md">
+                            <div [innerHtml]="selectedProduct?.tandc?.t_and_c"></div>
+                          </div>
+                        </div>
+                        <!-- Social-Media -->
+                        <div class="w-full space-y-3"
+                        *ngIf="selectedProduct?.tandc?.facebook && selectedProduct?.tandc?.facebook != '' ||
+                              selectedProduct?.tandc?.twitter && selectedProduct?.tandc?.twitter != '' ||
+                              selectedProduct?.tandc?.youtube && selectedProduct?.tandc?.youtube != '' ||
+                              selectedProduct?.tandc?.pinterest && selectedProduct?.tandc?.pinterest != '' ||
+                              selectedProduct?.tandc?.instagram && selectedProduct?.tandc?.instagram != '' ||
+                              selectedProduct?.tandc?.linkedin && selectedProduct?.tandc?.linkedin != ''"
+                              >
+                          <span class="block text-base lg:text-xl font-bold">Social Media</span>
+                          <div class="flex items-center space-x-5 p-5 lg:p-7 bg-white rounded-lg">
+                            <a *ngIf="selectedProduct?.tandc?.facebook != ''" [href]="selectedProduct?.tandc?.facebook" target="_blank">
+                              <img class="w-10 h-10 object-cover" alt="facebook" src="../assets/images/facebook.png" />
+                            </a>
+                            <a *ngIf="selectedProduct?.tandc?.twitter != ''" [href]="selectedProduct?.tandc?.twitter" target="_blank">
+                              <img class="w-10 h-10 object-cover" alt="twiiter" src="../assets/images/twiiter.png" />
+                            </a>
+                            <a *ngIf="selectedProduct?.tandc?.youtube != ''" [href]="selectedProduct?.tandc?.youtube" target="_blank">
+                              <img class="w-10 h-10 object-cover" alt="youtube" src="../assets/images/youtube.png" />
+                            </a>
+                            <a *ngIf="selectedProduct?.tandc?.pinterest != ''" [href]="selectedProduct?.tandc?.pinterest" target="_blank">
+                              <img class="w-10 h-10 object-cover" alt="pinterest" src="../assets/images/pinterest.png" />
+                            </a>
+                            <a *ngIf="selectedProduct?.tandc?.instagram != ''" [href]="selectedProduct?.tandc?.instagram" target="_blank">
+                              <img class="w-10 h-10 object-cover" alt="instagram" src="../assets/images/instagram.png" />
+                            </a>
+                            <a *ngIf="selectedProduct?.tandc?.linkedin != ''" [href]="selectedProduct?.tandc?.linkedin" target="_blank">
+                              <img class="w-10 h-10 object-cover" alt="linkdin" src="../assets/images/linked.png" />
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- right-bar  -->
+                    <div class="w-full lg:w-4/12 lg:pl-5 space-y-7 pt-5 lg:pt-0">
+                      <!-- Calender  -->
+                      <div class="rounded-md bg-white p-8 space-y-6">
+                        <div>
+                          <span class="text-quicksilver text-xs font-bold"><i class="icon-calendar"></i> Date</span>
+                          <p class="text-sm font-bold text-japaneseIndigo">{{selectedProduct?.event_date | date:'dd MMM, yyyy'}}</p>
+                        </div>
+                        <div>
+                          <span class="text-quicksilver text-xs font-bold"><i class="icon-time"></i> Time</span>
+                          <p class="text-sm font-bold text-japaneseIndigo uppercase">{{selectedProduct?.event_start_time | convertFrom24To12Format}} - {{selectedProduct?.event_end_time | convertFrom24To12Format}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
               <div class="flex items-center justify-between w-full border-t px-8 py-4">
-                <!-- <button class="-ml-4" mat-button [color]="'warn'" (click)="deleteSelectedProduct(selectedProduct)"> Delete </button> -->
+                <button class="-ml-4" mat-button [color]="'warn'" (click)="deleteSelectedProduct(selectedProduct)"> Delete </button>
                 <div class="flex items-center">
                   <div class="flex items-center mr-4" *ngIf="flashMessage">
                     <ng-container *ngIf="flashMessage === 'success'">
