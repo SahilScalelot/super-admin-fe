@@ -19,7 +19,7 @@
       <!-- Add product button -->
       <button class="ml-4" mat-flat-button [color]="'primary'" (click)="exceldawnload()">
         <!-- <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon> -->
-        <span class="ml-2 mr-1">Excel Download</span>
+        <span class="ml-2 mr-1">Export</span>
       </button>
     </div>
   </div>
@@ -107,7 +107,7 @@
                     <td class="py-3">{{(organizer.email) ? organizer.email : 'N/A'}}</td>
                     <td class="py-3">{{(organizer.mobile) ? organizer.mobile : 'N/A'}}</td>
                   </tr>
-                  <tr *ngIf="selectedProductArr?.length == 0">
+                  <tr *ngIf="selectedProductArr?.length === 0">
                     <th class="py-4 text-center" colspan="3">No organizer found</th>
                   </tr>
                 </table>
