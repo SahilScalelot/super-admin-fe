@@ -62,7 +62,7 @@ export class AgentComponent implements OnInit {
     this._apiService.getList(this.filterObj).subscribe((result: any) => {
       if (result && result.IsSuccess) {
         console.log(result.Data.docs);
-        this.products = result.Data.docs;        
+        this.products = result.Data.docs;
         const pagination: any = this._globalFunctions.copyObject(result.Data);
         delete pagination.docs;
         this.pagination = pagination;
@@ -73,6 +73,22 @@ export class AgentComponent implements OnInit {
     }, (error: any) => {
       this._globalFunctions.errorHanding(error, this, true);
       this.isLoading = false;
+    });
+  }
+  exceldawnload(): any{
+    this._apiService.export(Blob).subscribe(async (results: any) => {
+        // console.log('Data is received - Result - ',results);
+        if (results && results.IsSuccess) {
+             const href = results.Data;
+             const anchorElement = document.createElement('a');
+             anchorElement.href = href;
+            //  anchorElement.target = '_blank';
+            //  anchorElement.download ="";
+             document.body.appendChild(anchorElement);
+             anchorElement.click();
+             document.body.removeChild(anchorElement);
+             window.URL.revokeObjectURL(href);
+        }
     });
   }
 
@@ -99,7 +115,7 @@ export class AgentComponent implements OnInit {
     this.selectedProductArr = null;
   }
 
-  toggleDetails(item: any = {}): void {    
+  toggleDetails(item: any = {}): void {
     // If the product is already selected...
     const tmpSelectedProduct: any = this._globalFunctions.copyObject(this.selectedProduct || {});
     if (tmpSelectedProduct && tmpSelectedProduct._id === item._id) {
@@ -112,7 +128,7 @@ export class AgentComponent implements OnInit {
     this.getOrganizer(item._id);
     // this._prepareItemsListForm(item);
   }
-  
+
   getOrganizer(agentId: any = ''): void {
     this.isLoading = true;
     this._apiService.getOrganizer(agentId).subscribe((result: any) => {

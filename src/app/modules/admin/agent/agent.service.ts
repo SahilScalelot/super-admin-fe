@@ -9,13 +9,17 @@ import { environment } from 'environments/environment';
 export class AgentService {
 
   constructor(private http: HttpClient,private _globalFunctions: GlobalFunctions) { }
-  
+
   getList(filter: any = {}): any {
     return this.http.post(environment.appURL + 'superadmin/agent', filter, this._globalFunctions.getFileAuthorizationHeader());
   }
 
   getOrganizer(id: any = ''): any {
     return this.http.post(environment.appURL + 'superadmin/agent/getorganiser', {agentid: id}, this._globalFunctions.getAuthorizationHeader());
+  }
+
+  export(bolb): any {
+    return this.http.post(environment.appURL + 'superadmin/agent/export',bolb, this._globalFunctions.getFileAuthorizationHeader());
   }
 
 }

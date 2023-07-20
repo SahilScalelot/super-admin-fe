@@ -9,13 +9,17 @@ import { environment } from 'environments/environment';
 export class UsersService {
 
   constructor(private http: HttpClient,private _globalFunctions: GlobalFunctions) { }
-  
+
   getList(filter: any = {}): any {
     return this.http.post(environment.appURL + 'superadmin/users', filter, this._globalFunctions.getFileAuthorizationHeader());
   }
 
   getOne(id: any = ''): any {
     return this.http.post(environment.appURL + 'superadmin/users/getone', {userid: id}, this._globalFunctions.getAuthorizationHeader());
+  }
+
+  export(bolb): any {
+    return this.http.post(environment.appURL + 'superadmin/users/export',bolb, this._globalFunctions.getFileAuthorizationHeader());
   }
 
 }

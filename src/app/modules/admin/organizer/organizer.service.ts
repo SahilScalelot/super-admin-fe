@@ -9,7 +9,7 @@ import { environment } from 'environments/environment';
 export class OrganizerService {
 
   constructor(private http: HttpClient,private _globalFunctions: GlobalFunctions) { }
-  
+
   getList(filter: any = {}): any {
     return this.http.post(environment.appURL + 'superadmin/organizer', filter, this._globalFunctions.getFileAuthorizationHeader());
   }
@@ -29,5 +29,13 @@ export class OrganizerService {
   delete(id: any = ''): any {
     return this.http.post(environment.appURL + 'superadmin/organizer/remove', {organizerid: id}, this._globalFunctions.getAuthorizationHeader());
   }
+
+  export(bolb): any {
+    return this.http.post(environment.appURL + 'superadmin/organizer/export',bolb, this._globalFunctions.getFileAuthorizationHeader());
+  }
+
+
+
+
 
 }
